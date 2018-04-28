@@ -1,0 +1,3 @@
+INDEX VERSION 1.130+H:\M03-Programació bàsica\PacmanGFX\.metadata\.plugins\org.eclipse.jdt.core
+1763252646.index
+1036049773.index
