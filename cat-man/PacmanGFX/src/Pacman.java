@@ -12,7 +12,7 @@ public class Pacman {
 	static Finestra f = new Finestra(t);
 	static Scanner sc = new Scanner(System.in);
 	static int mapaInicio[][] = iniciaMapa();
-	static int mapaaaaaa[][] = iniciaMapa();
+	static int mapa[][] = iniciaMapa();
 	static boolean finjuego = false;	
 	static int mov = 0;
 	static boolean fin = false;
@@ -24,7 +24,7 @@ public class Pacman {
 	static ArrayList<Integer> duplicados2;
 	static int filas = 31;
 	static int columnas = 28;
-		
+	static Catman player1 = new Catman(23,14);
 	
 	private static int[][] iniciaMapa() {
 		int mapaInicio[][] = {
@@ -72,9 +72,7 @@ public class Pacman {
 		Fantasma redGhost = new Fantasma(11,12,3,4,5,6,0); 	//posx,posy,AR,AB,I,D
 		Fantasma blueGhost = new Fantasma(14,11,7,8,9,10,20); 	//posx,posy,AR,AB,I,D
 		Fantasma yellowGhost = new Fantasma(14,16,15,16,17,18,20); //posx,posy,AR,AB,I,D
-		Catman player1 = new Catman(23,14);
-		listc = new ArrayList<Catman>();
-		listc.add(player1);
+		
 		listf = new ArrayList<Fantasma>();
 		listf.add(redGhost);
 		listf.add(blueGhost);
@@ -234,7 +232,7 @@ public class Pacman {
         t.setImatges(imatges);
         f.setActetiquetes(false); 
         f.setTitle("Cat-Man");
-		t.dibuixa(mapaaaaaa);
+		t.dibuixa(mapa);
 	}
 	
 	private static void tecladoWASD() {
@@ -318,26 +316,24 @@ public class Pacman {
 		
 	public static void fun() {
 		
-		long startTime = System.currentTimeMillis();
-		initThings();
+		//long startTime = System.currentTimeMillis();
 		
-		for (Catman c : listc) {
-			c.mueveteCatman();
-		}
+		
+		player1.mueveteCatman();
 		tecladoWASD();		
 		for(Fantasma f : listf) {
-			f.hazLoTuyo();
+			f.hazLoTuyo(player1);
 		}
 		fin();
-		long endTime = System.currentTimeMillis();
+		//long endTime = System.currentTimeMillis();
 		
-		long time = endTime-startTime;
+		//long time = endTime-startTime;
 		//System.out.println("tiempo de Jessica "+time);
 		
-		long dstartTime = System.currentTimeMillis();
-		t.dibuixa(mapaaaaaa);
-		long dendTime = System.currentTimeMillis();
-		long dtime = dendTime-dstartTime;
+		//long dstartTime = System.currentTimeMillis();
+		t.dibuixa(mapa);
+		//long dendTime = System.currentTimeMillis();
+		//long dtime = dendTime-dstartTime;
 		//System.out.println("Tiempo de Marc "+dtime);
 		/*String valor = "";
 		for (int i=0;i<filas;i++) {
@@ -355,6 +351,7 @@ public class Pacman {
 	public static void main(String[] args) throws Throwable {
 				
 		ponerGraficos();
+		initThings();
 		
 		
         timer.schedule(new TimerTask() 

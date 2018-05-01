@@ -115,15 +115,15 @@ public class Fantasma {
 		this.die = die;
 	}
 
-	public void hazLoTuyo() {
+	public void hazLoTuyo(Catman c) {
 		// TODO Auto-generated method stub
 
-		this.move();
-		this.know();
+		this.move(c);
+		this.know(c);
 
 	}
 
-	private void know() {
+	private void know(Catman c) {
 
 		if (die) {
 			tiempobolagorda++;
@@ -162,10 +162,10 @@ public class Fantasma {
 		int resultY=0;
 		int resultX=0;
 		String solucion="";
-		int XAR = Pacman.mapaaaaaa[x - 1][y];
-		int XAB = Pacman.mapaaaaaa[x + 1][y];
-		int YIZ = Pacman.mapaaaaaa[x][y - 1];
-		int YDE = Pacman.mapaaaaaa[x][y + 1];
+		int XAR = Pacman.mapa[x - 1][y];
+		int XAB = Pacman.mapa[x + 1][y];
+		int YIZ = Pacman.mapa[x][y - 1];
+		int YDE = Pacman.mapa[x][y + 1];
 		String prueba1="";
 		String prueba2="";
 		String prueba3="";
@@ -238,21 +238,21 @@ public class Fantasma {
 			
 			switch (option) {
 			case "DE":
-				if (positionHomeY < y && Pacman.mapaaaaaa[this.getPosX() + 1][this.getPosY()] != 1) { // right
+				if (positionHomeY < y && Pacman.mapa[this.getPosX() + 1][this.getPosY()] != 1) { // right
 					this.operaPos("+", "y");
 					System.out.println("vuelve derecha");
 				}
 				break;
 		
 			case "IZ":
-				if (positionHomeY > y && Pacman.mapaaaaaa[this.getPosX() - 1][this.getPosY()] != 1) { // left
+				if (positionHomeY > y && Pacman.mapa[this.getPosX() - 1][this.getPosY()] != 1) { // left
 					this.operaPos("-", "y");
 					System.out.println("vuelve izquierda");
 				}
 				break;
 		
 			case "AR":
-				if (positionHomeX > x && Pacman.mapaaaaaa[this.getPosX() - 1][this.getPosY()] != 1) { // up
+				if (positionHomeX > x && Pacman.mapa[this.getPosX() - 1][this.getPosY()] != 1) { // up
 					this.operaPos("-", "x");
 					System.out.println("vuelve arriba");
 		
@@ -260,7 +260,7 @@ public class Fantasma {
 				break;
 		
 			case "AB":
-				if (positionHomeX < x && Pacman.mapaaaaaa[this.getPosX() + 1][this.getPosY()] != 1) { // down
+				if (positionHomeX < x && Pacman.mapa[this.getPosX() + 1][this.getPosY()] != 1) { // down
 					this.operaPos("+", "x");
 					System.out.println("vuelve abajo");
 				}
@@ -288,10 +288,10 @@ public class Fantasma {
 		
 		// get next position
 		
-		int XAR = Pacman.mapaaaaaa[x - 1][y];
-		int XAB = Pacman.mapaaaaaa[x + 1][y];
-		int YIZ = Pacman.mapaaaaaa[x][y - 1];
-		int YDE = Pacman.mapaaaaaa[x][y + 1];
+		int XAR = Pacman.mapa[x - 1][y];
+		int XAB = Pacman.mapa[x + 1][y];
+		int YIZ = Pacman.mapa[x][y - 1];
+		int YDE = Pacman.mapa[x][y + 1];
 		
 		// check next position
 
@@ -326,9 +326,9 @@ public class Fantasma {
 
 	}
 
-	private void move() {
+	private void move(Catman c) {
 
-		Pacman.mapaaaaaa[posX][posY] = lastNumber;
+		Pacman.mapa[posX][posY] = lastNumber;
 		movDone = false;
 		if (returningHome) {
 			returnHome();
@@ -337,25 +337,25 @@ public class Fantasma {
 				int movF = (int) (Math.random() * (4) + 1);
 				switch (movF) {
 				case 1: // DOWN MOV
-					if (Pacman.mapaaaaaa[this.getPosX() + 1][this.getPosY()] != 1
-							&& Pacman.mapaaaaaa[this.getPosX() + 1][this.getPosY()] != 22
-							&& !ghostWall.contains(Pacman.mapaaaaaa[this.getPosX() + 1][this.getPosY()])) { // can he move down?
+					if (Pacman.mapa[this.getPosX() + 1][this.getPosY()] != 1
+							&& Pacman.mapa[this.getPosX() + 1][this.getPosY()] != 22
+							&& !ghostWall.contains(Pacman.mapa[this.getPosX() + 1][this.getPosY()])) { // can he move down?
 
 						this.operaPos("+", "x");
-						lastNumber = Pacman.mapaaaaaa[this.getPosX()][this.getPosY()];
+						lastNumber = Pacman.mapa[this.getPosX()][this.getPosY()];
 						// DEATH
 						if (this.getDie() == true) {
-							Pacman.mapaaaaaa[this.getPosX()][this.getPosY()] = 28;
+							Pacman.mapa[this.getPosX()][this.getPosY()] = 28;
 							this.setMovDone(true);
-							if (this.getPosX() == Pacman.pacx && this.getPosY() == Pacman.pacy) {
-								Pacman.mapaaaaaa[this.getPosX()][this.getPosY()] = 14;// el 14 es el rosa Cambiar																			
-								nextMove();
-								returnHome();
+							if (this.getPosX() == c.getpacx() && this.getPosY() == c.getpacy()) {
+								Pacman.mapa[this.getPosX()][this.getPosY()] = 14;// el 14 es el rosa Cambiar																			
+								//nextMove();
+								//returnHome();
 							}
 
 							// ALIVE
 						} else if (this.getDie() == false) {
-							Pacman.mapaaaaaa[this.getPosX()][this.getPosY()] = imgAB;
+							Pacman.mapa[this.getPosX()][this.getPosY()] = imgAB;
 							this.setMovDone(true);
 						} else {
 							this.setMovDone(true);
@@ -365,24 +365,24 @@ public class Fantasma {
 
 					break;
 				case 2: // UP MOV
-					if (Pacman.mapaaaaaa[this.getPosX() - 1][this.getPosY()] != 1
-							&& !ghostWall.contains(Pacman.mapaaaaaa[this.getPosX() - 1][this.getPosY()])) {// can he move up?
+					if (Pacman.mapa[this.getPosX() - 1][this.getPosY()] != 1
+							&& !ghostWall.contains(Pacman.mapa[this.getPosX() - 1][this.getPosY()])) {// can he move up?
 
 						this.operaPos("-", "x");
-						lastNumber = Pacman.mapaaaaaa[this.getPosX()][this.getPosY()];
+						lastNumber = Pacman.mapa[this.getPosX()][this.getPosY()];
 						// DEATH
 						if (this.getDie() == true) {
-							Pacman.mapaaaaaa[this.getPosX()][this.getPosY()] = 28;
+							Pacman.mapa[this.getPosX()][this.getPosY()] = 28;
 							this.setMovDone(true);
-							if (this.getPosX() == Pacman.pacx && this.getPosY() == Pacman.pacy) {
-								Pacman.mapaaaaaa[this.getPosX()][this.getPosY()] = 14;// el 14 es el rosa Cambiar 																			
-								sVortex();
-								returnHome();
+							if (this.getPosX() == c.getpacx() && this.getPosY() == c.getpacy()) {
+								Pacman.mapa[this.getPosX()][this.getPosY()] = 14;// el 14 es el rosa Cambiar 																			
+								//sVortex();
+								//returnHome();
 							}
 							// ALIVE
 
 						} else if (this.getDie() == false) {
-							Pacman.mapaaaaaa[this.getPosX()][this.getPosY()] = imgAR;
+							Pacman.mapa[this.getPosX()][this.getPosY()] = imgAR;
 							this.setMovDone(true);
 						} else {
 							this.setMovDone(true);
@@ -392,26 +392,26 @@ public class Fantasma {
 
 					break;
 				case 3: // LEFT MOV
-					if (Pacman.mapaaaaaa[this.getPosX()][this.getPosY() - 1] != 1
-							&& Pacman.mapaaaaaa[this.getPosX()][this.getPosY() - 1] != 22
-							&& !ghostWall.contains(Pacman.mapaaaaaa[this.getPosX()][this.getPosY() - 1])
+					if (Pacman.mapa[this.getPosX()][this.getPosY() - 1] != 1
+							&& Pacman.mapa[this.getPosX()][this.getPosY() - 1] != 22
+							&& !ghostWall.contains(Pacman.mapa[this.getPosX()][this.getPosY() - 1])
 					/* && returningHome==false */) {// can he move left?
 
 						this.operaPos("-", "y");
-						lastNumber = Pacman.mapaaaaaa[this.getPosX()][this.getPosY()];
+						lastNumber = Pacman.mapa[this.getPosX()][this.getPosY()];
 						// DEATH
 						if (this.getDie() == true) {
-							Pacman.mapaaaaaa[this.getPosX()][this.getPosY()] = 28;
+							Pacman.mapa[this.getPosX()][this.getPosY()] = 28;
 							this.setMovDone(true);
-							if (this.getPosX() == Pacman.pacx && this.getPosY() == Pacman.pacy) {
-								Pacman.mapaaaaaa[this.getPosX()][this.getPosY()] = 14;// el 14 es el rosa Cambiar																				
-								sVortex();
-								returnHome();
+							if (this.getPosX() == c.getpacx() && this.getPosY() == c.getpacy()) {
+								Pacman.mapa[this.getPosX()][this.getPosY()] = 14;// el 14 es el rosa Cambiar																				
+								//sVortex();
+								//returnHome();
 							}
 							// ALIVE
 						} else if (this.getDie() == false) {
 
-							Pacman.mapaaaaaa[this.getPosX()][this.getPosY()] = imgI;
+							Pacman.mapa[this.getPosX()][this.getPosY()] = imgI;
 							this.setMovDone(true);
 
 						} else {
@@ -421,25 +421,25 @@ public class Fantasma {
 
 					break;
 				case 4: // RIGHT MOV
-					if (Pacman.mapaaaaaa[this.getPosX()][this.getPosY() + 1] != 1
-							&& Pacman.mapaaaaaa[this.getPosX()][this.getPosY() + 1] != 22
-							&& !ghostWall.contains(Pacman.mapaaaaaa[this.getPosX()][this.getPosY() + 1])
+					if (Pacman.mapa[this.getPosX()][this.getPosY() + 1] != 1
+							&& Pacman.mapa[this.getPosX()][this.getPosY() + 1] != 22
+							&& !ghostWall.contains(Pacman.mapa[this.getPosX()][this.getPosY() + 1])
 					/* && returningHome==false */) {// can he move right?
 
 						this.operaPos("+", "y");
-						lastNumber = Pacman.mapaaaaaa[this.getPosX()][this.getPosY()];
+						lastNumber = Pacman.mapa[this.getPosX()][this.getPosY()];
 						// DEATH
 						if (this.getDie() == true) {
-							Pacman.mapaaaaaa[this.getPosX()][this.getPosY()] = 28;
+							Pacman.mapa[this.getPosX()][this.getPosY()] = 28;
 							this.setMovDone(true);
-							if (this.getPosX() == Pacman.pacx && this.getPosY() == Pacman.pacy) {
-								Pacman.mapaaaaaa[this.getPosX()][this.getPosY()] = 14;// el 14 es el rosa Cambiar																				
-								sVortex();
-								returnHome();
+							if (this.getPosX() == c.getpacx() && this.getPosY() == c.getpacy()) {
+								Pacman.mapa[this.getPosX()][this.getPosY()] = 14;// el 14 es el rosa Cambiar																				
+								//sVortex();
+								//returnHome();
 							}
 							// ALIVE
 						} else if (this.getDie() == false) {
-							Pacman.mapaaaaaa[this.getPosX()][this.getPosY()] = imgD;
+							Pacman.mapa[this.getPosX()][this.getPosY()] = imgD;
 							this.setMovDone(true);
 						} else {
 							this.setMovDone(true);
