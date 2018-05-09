@@ -68,6 +68,8 @@ public class Pacman {
 		return mapaInicio;
 	}
 	
+	
+	
 	private static void initThings () {
 		Fantasma redGhost = new Fantasma(11,12,3,4,5,6,0); 	//posx,posy,AR,AB,I,D
 		Fantasma blueGhost = new Fantasma(14,11,7,8,9,10,20); 	//posx,posy,AR,AB,I,D
@@ -199,7 +201,7 @@ public class Pacman {
 		t.setActcolors(false); //ya no quiero colores
         t.setActimatges(true); 
         t.setActborde(false);  //no quiero borde entre casillas
-        t.setActimgbackground(true);  //                          quiero fondo de imagen CAMBIAR A TRUEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
+        t.setActimgbackground(true);  //  TRUE PARA REVERTIR CAMBIOS
         t.setImgbackground("fondo.jpg");  //direccion al fondo. Todas las imagenes en la carpeta del proyecto
         String[] imatges = { 
         		

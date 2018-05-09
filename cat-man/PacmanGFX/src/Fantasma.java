@@ -2,8 +2,8 @@ import java.util.ArrayList;
 
 public class Fantasma {
 
-	public Integer posX;
-	public Integer posY;
+	private Integer posX;
+	private Integer posY;
 	private Boolean movDone = false;
 	private Boolean firstTime = false;
 	private Boolean die = false;
@@ -40,12 +40,11 @@ public class Fantasma {
 		}
 	}
 
-	/*public Fantasma() { // en caso de usar fantasma sin posiciones-imagenes
-		initGhostWall();
-	}*/
+	public Fantasma() {
+		
+	}
 
 	public Fantasma(Integer posicionX, Integer posicionY, int AR, int AB, int I, int D, int lastNumber) {
-
 		initGhostWall();
 		this.posX = posicionX;
 		this.posY = posicionY;
@@ -56,6 +55,7 @@ public class Fantasma {
 		this.lastNumber = lastNumber;
 
 	}
+	
 
 	public Integer getPosX() {
 		return posX;
@@ -116,8 +116,7 @@ public class Fantasma {
 	}
 
 	public void hazLoTuyo(Catman c) {
-		// TODO Auto-generated method stub
-
+		this.firstMove(c);
 		this.move(c);
 		this.know(c);
 
@@ -146,6 +145,12 @@ public class Fantasma {
 			}
 		}
 	}
+	
+	
+	
+	/*Fantasma redGhost = new Fantasma(11,12,3,4,5,6,0); 	//posx,posy,AR,AB,I,D
+	Fantasma blueGhost = new Fantasma(14,11,7,8,9,10,20); 	//posx,posy,AR,AB,I,D
+	Fantasma yellowGhost = new Fantasma(14,16,15,16,17,18,20); //posx,posy,AR,AB,I,D*/
 
 	private boolean noDijkstra(boolean b) {
 
@@ -326,6 +331,21 @@ public class Fantasma {
 
 	}
 
+	private void firstMove(Catman c) {//extension del movimiento
+		
+		if (this.posX==14&&this.posY==11) {//red
+				this.operaPos("-", "x");
+				lastNumber = Pacman.mapa[this.getPosX()][this.getPosY()];				
+			
+		}else if(this.posX==14&&this.posY==16) {
+			
+		}/*else if () posicion del fantasma rosa*/
+		
+		
+	}
+	
+	
+	
 	private void move(Catman c) {
 
 		Pacman.mapa[posX][posY] = lastNumber;
