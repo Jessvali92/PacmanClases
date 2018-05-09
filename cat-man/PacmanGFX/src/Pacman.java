@@ -69,7 +69,6 @@ public class Pacman {
 	}
 	
 	
-	
 	private static void initThings () {
 		Fantasma redGhost = new Fantasma(11,12,3,4,5,6,0); 	//posx,posy,AR,AB,I,D
 		Fantasma blueGhost = new Fantasma(14,11,7,8,9,10,20); 	//posx,posy,AR,AB,I,D
@@ -82,120 +81,12 @@ public class Pacman {
 		Coords.addcoo();
 	}
 	
-	/*private void errors() {
-		String valor = "";
-		int esta=0;
-		int fi;
-		int co;
-		for (int i=0;i<filas;i++) {
-			for (int j=0;j<columnas;j++) {
-				 if(map[i][j]==3) {
-                     esta=esta+1;
-                     fi=i;
-                     co=j;
-				 }	
-			}
-		}
-		if (esta>2) {
-			map[fi][co]
-		}
-	}*/
-	
-	/*private static void solapar() {
- 		ArrayList<Integer> positionGhostListX = new ArrayList<Integer>();
- 		ArrayList<Integer> positionGhostListY = new ArrayList<Integer>();
- 		for (Fantasma fan : listf) {
- 			positionGhostListX.add(fan.getPosX());
- 			positionGhostListY.add(fan.getPosY());
-	
- 		}
- 		for (int i=0; i<positionGhostListX.size();i++ ) {
- 			int position = positionGhostListX.get(i);
- 			for (int j=0; j<positionGhostListX.size();j++) {
- 				int position2 = positionGhostListX.get(j);
- 				if (i!=j) {
- 					if (position2==position) {
- 						
- 						avoidGhost = true;
- 					}else {
- 						avoidGhost = false;
- 					}
- 				}
- 				
- 			}
- 			
- 			
- 			
- 			
- 		}
- 		
- 		for (Integer pos2 : positionGhostListY ) {
- 			
- 		}
- 		
- 		avoidGhost = true;
-					
-	}*/
 	
 	public static void fin() {
 		if (fin) {
 			timer.cancel();	
 		}
 	}
-
-	
-
-
-	
-	/*private static void movePacman() {		
-		
-		boolean movDone = false;
-		
-		if(!finjuego) {
-			
-			while (!movDone) {
-				// pac derecha
-				if (mov == 6) {
-					if (map[pacx][pacy+1]!=1) {
-							map[pacx][pacy] = 20;
-							pacy++;
-							map[pacx][pacy] = 19;
-					}
-	
-					// pac izquierda
-				} else if (mov == 4) {
-						if (map[pacx][pacy-1]!=1 /*&& map[pacx][pacy-1]!=21*//*){
-								map[pacx][pacy] = 20;
-								pacy--;
-								map[pacx][pacy] = 26;
-						}
-					// pac abajo
-				} else if (mov == 5) {
-					if (map[pacx+1][pacy]!=1) {
-							map[pacx][pacy] = 20;
-							pacx++;
-							map[pacx][pacy] = 32;
-							
-					}else if (map[pacx+1][pacy]==9) {
-						map[pacx][pacy] = 20;
-						pacy--;
-						map[pacx][pacy] = 32;
-					}
-					
-					// pac arriba
-				} else if (mov == 8) {
-					if (map[pacx-1][pacy]!=1) {
-							map[pacx][pacy] = 20;
-							pacx--;
-							map[pacx][pacy] = 31;
-					}
-				
-				}
-				movDone = true;
-			}			
-		}
-		
-	}*/
 	
 	private static void ponerGraficos() {
 		t.setActcolors(false); //ya no quiero colores
@@ -344,10 +235,6 @@ public class Pacman {
 			}valor = valor + "\n";
 		}System.out.println(valor);*/
 	}
-	
-	
-
-	
 	
 
 	public static void main(String[] args) throws Throwable {

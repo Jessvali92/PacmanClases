@@ -20,6 +20,11 @@ public class Fantasma {
 	public int positionHomeY = 14;
 	public String op = "";
 	int vortex = 0;
+	private boolean f1move = true;
+	private boolean f2move = false;
+	private boolean f3move = false;
+	private boolean f4move = false;
+	private boolean f5move = false;
 
 	/*
 	 * "rojoAR.png","rojoAB.png","rojoI.png","RojoD.png",//3,4,5,6 ROJO
@@ -116,7 +121,6 @@ public class Fantasma {
 	}
 
 	public void hazLoTuyo(Catman c) {
-		this.firstMove(c);
 		this.move(c);
 		this.know(c);
 
@@ -148,10 +152,6 @@ public class Fantasma {
 	
 	
 	
-	/*Fantasma redGhost = new Fantasma(11,12,3,4,5,6,0); 	//posx,posy,AR,AB,I,D
-	Fantasma blueGhost = new Fantasma(14,11,7,8,9,10,20); 	//posx,posy,AR,AB,I,D
-	Fantasma yellowGhost = new Fantasma(14,16,15,16,17,18,20); //posx,posy,AR,AB,I,D*/
-
 	private boolean noDijkstra(boolean b) {
 
 		// camino siguiente
@@ -331,7 +331,7 @@ public class Fantasma {
 
 	}
 
-	private void firstMove(Catman c) {//extension del movimiento
+	/*private void firstMove(Catman c) {//extension del movimiento
 		
 		if (this.posX==14&&this.posY==11) {//red
 				this.operaPos("-", "x");
@@ -339,14 +339,54 @@ public class Fantasma {
 			
 		}else if(this.posX==14&&this.posY==16) {
 			
-		}/*else if () posicion del fantasma rosa*/
+		}//else if () posicion del fantasma rosa
 		
 		
+	}*/
+	
+	private void firstMoveBlue() {
+		if (f1move) {		
+			this.operaPos("+", "y");
+			lastNumber = Pacman.mapa[this.getPosX()][this.getPosY()];
+			f1move = false;
+			f2move = true;	
+		}else if (f2move) {
+			this.operaPos("+", "y");
+			lastNumber = Pacman.mapa[this.getPosX()][this.getPosY()];
+			f2move = false;
+			f3move = true;
+		}else if (f3move) {
+			this.operaPos("-", "x");
+			lastNumber = Pacman.mapa[this.getPosX()][this.getPosY()];
+			f3move = false;
+			f4move = true;
+		}else if (f4move) {
+			this.operaPos("-", "x");
+			lastNumber = Pacman.mapa[this.getPosX()][this.getPosY()];
+			f4move= false;
+			f5move = true;
+		}else if (f5move) {
+			this.operaPos("-", "x");
+			lastNumber = Pacman.mapa[this.getPosX()][this.getPosY()];
+			f5move = false;
+		}
 	}
 	
-	
-	
 	private void move(Catman c) {
+		
+		if (this.posX==14&&this.posY==11) {//blue
+			firstMoveBlue();
+		}else if (this.posX==14&&this.posY==12) {
+			firstMoveBlue();
+		}else if (this.posX==14&&this.posY==13) {
+			firstMoveBlue();
+		}else if (this.posX==13&&this.posY==13) {
+			firstMoveBlue();
+		}else if (this.posX==12&&this.posY==13) {
+			firstMoveBlue();
+		}else if (this.posX==11&&this.posY==13) {
+			firstMoveBlue();
+		}
 
 		Pacman.mapa[posX][posY] = lastNumber;
 		movDone = false;
@@ -470,6 +510,8 @@ public class Fantasma {
 			}
 		}
 	}
+
+	
 
 	
 
