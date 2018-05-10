@@ -16,7 +16,7 @@ public class Fantasma {
 	private int imgAB;
 	private int imgI;
 	private int imgD;
-	static ArrayList<Integer> ghostWall = new ArrayList<Integer>();
+	//static ArrayList<Integer> ghostWall = new ArrayList<Integer>();
 	static boolean red = false;
 	public boolean returningHome = false;
 	public int positionHomeX = 11;
@@ -39,11 +39,11 @@ public class Fantasma {
 	 * NARANJA
 	 */
 
-	public void initGhostWall() {
+	/*public void initGhostWall() {
 		for (int i = 3; i < 18; i++) {
 			ghostWall.add(i);
 		}
-	}
+	}*/
 	
 	public void banderas() {
 		for (int i = 0; i < 30; i++) {
@@ -56,7 +56,7 @@ public class Fantasma {
 	}
 
 	public Fantasma(Integer posicionX, Integer posicionY, int AR, int AB, int I, int D, int lastNumber,FantasmasFirstMove color) {
-		initGhostWall();
+		//initGhostWall();
 		banderas();		
 		this.posX = posicionX;
 		this.posY = posicionY;
@@ -148,89 +148,89 @@ public class Fantasma {
 	}
 	
 	private void firstMoveRed() {
-		Pacman.mapa[posX][posY] = lastNumber;
+		MapaFantasmas.mapa[posX][posY] = lastNumber;
 		if (banderas.get(15)==true) {	
 			this.operaPos("-", "y");
-			lastNumber = Pacman.mapa[this.getPosX()][this.getPosY()];
-			Pacman.mapa[this.getPosX()][this.getPosY()] = imgI;
+			lastNumber = MapaFantasmas.mapa[this.getPosX()][this.getPosY()];
+			MapaFantasmas.mapa[this.getPosX()][this.getPosY()] = imgI;
 			banderas.set(15,false);
 		}else if(banderas.get(16)==true) {
 			this.operaPos("-", "y");
-			lastNumber = Pacman.mapa[this.getPosX()][this.getPosY()];
-			Pacman.mapa[this.getPosX()][this.getPosY()] = imgI;
+			lastNumber = MapaFantasmas.mapa[this.getPosX()][this.getPosY()];
+			MapaFantasmas.mapa[this.getPosX()][this.getPosY()] = imgI;
 			banderas.set(16,false);
 		}else if(banderas.get(17)==true) {
 			this.operaPos("-", "y");
-			lastNumber = Pacman.mapa[this.getPosX()][this.getPosY()];
-			Pacman.mapa[this.getPosX()][this.getPosY()] = imgI;
+			lastNumber = MapaFantasmas.mapa[this.getPosX()][this.getPosY()];
+			MapaFantasmas.mapa[this.getPosX()][this.getPosY()] = imgI;
 			banderas.set(17,false);
 			banderas.set(14,false);
 		}
 	}
 	
 	/*private void firstMoveYellow() {
-		Pacman.mapa[posX][posY] = lastNumber;
+		MapaFantasmas.mapa[posX][posY] = lastNumber;
 		
 		if (banderas.get(9)==true) {		
 			this.operaPos("-", "x");
-			lastNumber = Pacman.mapa[this.getPosX()][this.getPosY()];
-			Pacman.mapa[this.getPosX()][this.getPosY()] = imgAR;
+			lastNumber = MapaFantasmas.mapa[this.getPosX()][this.getPosY()];
+			MapaFantasmas.mapa[this.getPosX()][this.getPosY()] = imgAR;
 			banderas.set(9, false);
 			System.out.println("arriba");
 			
 		}else if (banderas.get(18)) {
 			this.operaPos("+", "x");
-			lastNumber = Pacman.mapa[this.getPosX()][this.getPosY()];
-			Pacman.mapa[this.getPosX()][this.getPosY()] = imgAB;
+			lastNumber = MapaFantasmas.mapa[this.getPosX()][this.getPosY()];
+			MapaFantasmas.mapa[this.getPosX()][this.getPosY()] = imgAB;
 			banderas.set(18, false);
 			System.out.println("abajo");
 			
 		}else if (banderas.get(20)) {
 			this.operaPos("-", "x");
-			lastNumber = Pacman.mapa[this.getPosX()][this.getPosY()];
-			Pacman.mapa[this.getPosX()][this.getPosY()] = imgAR;
+			lastNumber = MapaFantasmas.mapa[this.getPosX()][this.getPosY()];
+			MapaFantasmas.mapa[this.getPosX()][this.getPosY()] = imgAR;
 			banderas.set(20, false);
 			System.out.println("arriba");
 			
 		}else if (banderas.get(21)) {
 			this.operaPos("+", "x");
-			lastNumber = Pacman.mapa[this.getPosX()][this.getPosY()];
-			Pacman.mapa[this.getPosX()][this.getPosY()] = imgAB;
+			lastNumber = MapaFantasmas.mapa[this.getPosX()][this.getPosY()];
+			MapaFantasmas.mapa[this.getPosX()][this.getPosY()] = imgAB;
 			banderas.set(21, false);
 			System.out.println("abajo");
 			
 		}else if (banderas.get(22)) {
 			this.operaPos("-", "x");
-			lastNumber = Pacman.mapa[this.getPosX()][this.getPosY()];
-			Pacman.mapa[this.getPosX()][this.getPosY()] = imgAR;
+			lastNumber = MapaFantasmas.mapa[this.getPosX()][this.getPosY()];
+			MapaFantasmas.mapa[this.getPosX()][this.getPosY()] = imgAR;
 			banderas.set(22, false);
 			System.out.println("arriba");
 			
 		}else if (banderas.get(10)==true) {
 			this.operaPos("-", "y");
-			lastNumber = Pacman.mapa[this.getPosX()][this.getPosY()];
-			Pacman.mapa[this.getPosX()][this.getPosY()] = imgI;
+			lastNumber = MapaFantasmas.mapa[this.getPosX()][this.getPosY()];
+			MapaFantasmas.mapa[this.getPosX()][this.getPosY()] = imgI;
 			banderas.set(10, false);
 			System.out.println("izquierda");
 			
 		}else if (banderas.get(11)==true) {
 			this.operaPos("-", "y");
-			lastNumber = Pacman.mapa[this.getPosX()][this.getPosY()];
-			Pacman.mapa[this.getPosX()][this.getPosY()] = imgAR;
+			lastNumber = MapaFantasmas.mapa[this.getPosX()][this.getPosY()];
+			MapaFantasmas.mapa[this.getPosX()][this.getPosY()] = imgAR;
 			banderas.set(11, false);
 			System.out.println("izquierda");
 			
 		}else if (banderas.get(12)==true) {
 			this.operaPos("-", "x");
-			lastNumber = Pacman.mapa[this.getPosX()][this.getPosY()];
-			Pacman.mapa[this.getPosX()][this.getPosY()] = imgAR;
+			lastNumber = MapaFantasmas.mapa[this.getPosX()][this.getPosY()];
+			MapaFantasmas.mapa[this.getPosX()][this.getPosY()] = imgAR;
 			banderas.set(12, false);
 			System.out.println("arriba");
 			
 		}else if (banderas.get(13)==true) {
 			this.operaPos("-", "x");
-			lastNumber = Pacman.mapa[this.getPosX()][this.getPosY()];
-			Pacman.mapa[this.getPosX()][this.getPosY()] = imgAR;
+			lastNumber = MapaFantasmas.mapa[this.getPosX()][this.getPosY()];
+			MapaFantasmas.mapa[this.getPosX()][this.getPosY()] = imgAR;
 			System.out.println("arriba");
 			banderas.set(13, false);
 			banderas.set(3,false);
@@ -239,35 +239,35 @@ public class Fantasma {
 	}*/
 	
 	/*private  void firstMoveBlue() {
-		Pacman.mapa[posX][posY] = lastNumber;
+		MapaFantasmas.mapa[posX][posY] = lastNumber;
 		if (banderas.get(4)==true) {		
 			this.operaPos("+", "y");
-			lastNumber = Pacman.mapa[this.getPosX()][this.getPosY()];
-			Pacman.mapa[this.getPosX()][this.getPosY()] = imgD;
+			lastNumber = MapaFantasmas.mapa[this.getPosX()][this.getPosY()];
+			MapaFantasmas.mapa[this.getPosX()][this.getPosY()] = imgD;
 			banderas.set(4, false);
 			System.out.println("D");
 		}else if (banderas.get(5)==true) {
 			this.operaPos("-", "x");
-			lastNumber = Pacman.mapa[this.getPosX()][this.getPosY()];
-			Pacman.mapa[this.getPosX()][this.getPosY()] = imgAR;
+			lastNumber = MapaFantasmas.mapa[this.getPosX()][this.getPosY()];
+			MapaFantasmas.mapa[this.getPosX()][this.getPosY()] = imgAR;
 			banderas.set(5, false);
 			System.out.println("AR");
 		}else if (banderas.get(6)==true) {
 			this.operaPos("-", "x");
-			lastNumber = Pacman.mapa[this.getPosX()][this.getPosY()];
-			Pacman.mapa[this.getPosX()][this.getPosY()] = imgI;
+			lastNumber = MapaFantasmas.mapa[this.getPosX()][this.getPosY()];
+			MapaFantasmas.mapa[this.getPosX()][this.getPosY()] = imgI;
 			banderas.set(6, false);
 			System.out.println("AR");
 		}else if (banderas.get(7)==true) {
 			this.operaPos("-", "x");
-			lastNumber = Pacman.mapa[this.getPosX()][this.getPosY()];
-			Pacman.mapa[this.getPosX()][this.getPosY()] = imgAR;
+			lastNumber = MapaFantasmas.mapa[this.getPosX()][this.getPosY()];
+			MapaFantasmas.mapa[this.getPosX()][this.getPosY()] = imgAR;
 			banderas.set(7, false);
 			System.out.println("AR");
 		}else if (banderas.get(8)==true) {
 			this.operaPos("-", "x");
-			lastNumber = Pacman.mapa[this.getPosX()][this.getPosY()];
-			Pacman.mapa[this.getPosX()][this.getPosY()] = imgAR;
+			lastNumber = MapaFantasmas.mapa[this.getPosX()][this.getPosY()];
+			MapaFantasmas.mapa[this.getPosX()][this.getPosY()] = imgAR;
 			System.out.println("AR");
 			banderas.set(8, false);
 			banderas.set(2,false);
@@ -316,10 +316,10 @@ public class Fantasma {
 		int resultY=0;
 		int resultX=0;
 		String solucion="";
-		int XAR = Pacman.mapa[x - 1][y];
-		int XAB = Pacman.mapa[x + 1][y];
-		int YIZ = Pacman.mapa[x][y - 1];
-		int YDE = Pacman.mapa[x][y + 1];
+		int XAR = MapaFantasmas.mapa[x - 1][y];
+		int XAB = MapaFantasmas.mapa[x + 1][y];
+		int YIZ = MapaFantasmas.mapa[x][y - 1];
+		int YDE = MapaFantasmas.mapa[x][y + 1];
 		String prueba1="";
 		String prueba2="";
 		String prueba3="";
@@ -392,21 +392,21 @@ public class Fantasma {
 			
 			switch (option) {
 			case "DE":
-				if (positionHomeY < y && Pacman.mapa[this.getPosX() + 1][this.getPosY()] != 1) { // right
+				if (positionHomeY < y && MapaFantasmas.mapa[this.getPosX() + 1][this.getPosY()] != 1) { // right
 					this.operaPos("+", "y");
 					System.out.println("vuelve derecha");
 				}
 				break;
 		
 			case "IZ":
-				if (positionHomeY > y && Pacman.mapa[this.getPosX() - 1][this.getPosY()] != 1) { // left
+				if (positionHomeY > y && MapaFantasmas.mapa[this.getPosX() - 1][this.getPosY()] != 1) { // left
 					this.operaPos("-", "y");
 					System.out.println("vuelve izquierda");
 				}
 				break;
 		
 			case "AR":
-				if (positionHomeX > x && Pacman.mapa[this.getPosX() - 1][this.getPosY()] != 1) { // up
+				if (positionHomeX > x && MapaFantasmas.mapa[this.getPosX() - 1][this.getPosY()] != 1) { // up
 					this.operaPos("-", "x");
 					System.out.println("vuelve arriba");
 		
@@ -414,7 +414,7 @@ public class Fantasma {
 				break;
 		
 			case "AB":
-				if (positionHomeX < x && Pacman.mapa[this.getPosX() + 1][this.getPosY()] != 1) { // down
+				if (positionHomeX < x && MapaFantasmas.mapa[this.getPosX() + 1][this.getPosY()] != 1) { // down
 					this.operaPos("+", "x");
 					System.out.println("vuelve abajo");
 				}
@@ -442,10 +442,10 @@ public class Fantasma {
 		
 		// get next position
 		
-		int XAR = Pacman.mapa[x - 1][y];
-		int XAB = Pacman.mapa[x + 1][y];
-		int YIZ = Pacman.mapa[x][y - 1];
-		int YDE = Pacman.mapa[x][y + 1];
+		int XAR = MapaFantasmas.mapa[x - 1][y];
+		int XAB = MapaFantasmas.mapa[x + 1][y];
+		int YIZ = MapaFantasmas.mapa[x][y - 1];
+		int YDE = MapaFantasmas.mapa[x][y + 1];
 		
 		// check next position
 
@@ -484,7 +484,6 @@ public class Fantasma {
 
 	
 	private void move(Catman c) {
-		Pacman.mapa[posX][posY] = lastNumber;
 		movDone = false;
 		if (returningHome) {
 			returnHome();
@@ -493,52 +492,45 @@ public class Fantasma {
 				int movF = (int) (Math.random() * (4) + 1);
 				switch (movF) {
 				case 1: // DOWN MOV
-					if (Pacman.mapa[this.getPosX() + 1][this.getPosY()] != 1
-							&& Pacman.mapa[this.getPosX() + 1][this.getPosY()] != 22
-							&& !ghostWall.contains(Pacman.mapa[this.getPosX() + 1][this.getPosY()])) { // can he move down?
-
+					if (MapaFantasmas.mapa[this.getPosX() + 1][this.getPosY()] != 1
+							&& MapaFantasmas.mapa[this.getPosX() + 1][this.getPosY()] != 22
+							/*&& !ghostWall.contains(Pacman.mapa[this.getPosX() + 1][this.getPosY()])*/) { // can he move down?
 						this.operaPos("+", "x");
-						lastNumber = Pacman.mapa[this.getPosX()][this.getPosY()];
 						// DEATH
 						if (this.getDie() == true) {
-							Pacman.mapa[this.getPosX()][this.getPosY()] = 28;
+							MapaFantasmas.mapa[this.getPosX()][this.getPosY()] = 28;
 							this.setMovDone(true);
 							if (this.getPosX() == c.getpacx() && this.getPosY() == c.getpacy()) {
-								Pacman.mapa[this.getPosX()][this.getPosY()] = 14;// el 14 es el rosa Cambiar																			
-								//nextMove();
-								//returnHome();
+								MapaFantasmas.mapa[this.getPosX()][this.getPosY()] = 14;// el 14 es el rosa Cambiar																			
 							}
 
-							// ALIVE
-						} else if (this.getDie() == false) {
-							Pacman.mapa[this.getPosX()][this.getPosY()] = imgAB;
-							this.setMovDone(true);
+						// ALIVE
 						} else {
+							MapaFantasmas.mapa[this.getPosX()][this.getPosY()] = imgAB;
+							this.setMovDone(true);
+						/*} else {
 							this.setMovDone(true);
 
-						}
+						}*/
 					}
 
 					break;
 				case 2: // UP MOV
-					if (Pacman.mapa[this.getPosX() - 1][this.getPosY()] != 1
-							&& !ghostWall.contains(Pacman.mapa[this.getPosX() - 1][this.getPosY()])) {// can he move up?
+					if (MapaFantasmas.mapa[this.getPosX() - 1][this.getPosY()] != 1
+							/*&& !ghostWall.contains(Pacman.mapa[this.getPosX() - 1][this.getPosY()])*/) {// can he move up?
 
 						this.operaPos("-", "x");
-						lastNumber = Pacman.mapa[this.getPosX()][this.getPosY()];
 						// DEATH
 						if (this.getDie() == true) {
-							Pacman.mapa[this.getPosX()][this.getPosY()] = 28;
+							MapaFantasmas.mapa[this.getPosX()][this.getPosY()] = 28;
 							this.setMovDone(true);
 							if (this.getPosX() == c.getpacx() && this.getPosY() == c.getpacy()) {
-								Pacman.mapa[this.getPosX()][this.getPosY()] = 14;// el 14 es el rosa Cambiar 																			
-								//sVortex();
-								//returnHome();
+								MapaFantasmas.mapa[this.getPosX()][this.getPosY()] = 14;// el 14 es el rosa Cambiar 																			
 							}
 							// ALIVE
 
 						} else if (this.getDie() == false) {
-							Pacman.mapa[this.getPosX()][this.getPosY()] = imgAR;
+							MapaFantasmas.mapa[this.getPosX()][this.getPosY()] = imgAR;
 							this.setMovDone(true);
 						} else {
 							this.setMovDone(true);
@@ -548,26 +540,24 @@ public class Fantasma {
 
 					break;
 				case 3: // LEFT MOV
-					if (Pacman.mapa[this.getPosX()][this.getPosY() - 1] != 1
-							&& Pacman.mapa[this.getPosX()][this.getPosY() - 1] != 22
-							&& !ghostWall.contains(Pacman.mapa[this.getPosX()][this.getPosY() - 1])
+					if (MapaFantasmas.mapa[this.getPosX()][this.getPosY() - 1] != 1
+							&& MapaFantasmas.mapa[this.getPosX()][this.getPosY() - 1] != 22
+							/*&& !ghostWall.contains(Pacman.mapa[this.getPosX()][this.getPosY() - 1])*/
 					/* && returningHome==false */) {// can he move left?
 
 						this.operaPos("-", "y");
-						lastNumber = Pacman.mapa[this.getPosX()][this.getPosY()];
 						// DEATH
 						if (this.getDie() == true) {
-							Pacman.mapa[this.getPosX()][this.getPosY()] = 28;
+							/*Pacman*/MapaFantasmas.mapa[this.getPosX()][this.getPosY()] = 28;
 							this.setMovDone(true);
 							if (this.getPosX() == c.getpacx() && this.getPosY() == c.getpacy()) {
-								Pacman.mapa[this.getPosX()][this.getPosY()] = 14;// el 14 es el rosa Cambiar																				
-								//sVortex();
-								//returnHome();
+								MapaFantasmas.mapa[this.getPosX()][this.getPosY()] = 14;// el 14 es el rosa Cambiar																				
+				
 							}
 							// ALIVE
 						} else if (this.getDie() == false) {
 
-							Pacman.mapa[this.getPosX()][this.getPosY()] = imgI;
+							MapaFantasmas.mapa[this.getPosX()][this.getPosY()] = imgI;
 							this.setMovDone(true);
 
 						} else {
@@ -577,25 +567,21 @@ public class Fantasma {
 
 					break;
 				case 4: // RIGHT MOV
-					if (Pacman.mapa[this.getPosX()][this.getPosY() + 1] != 1
-							&& Pacman.mapa[this.getPosX()][this.getPosY() + 1] != 22
-							&& !ghostWall.contains(Pacman.mapa[this.getPosX()][this.getPosY() + 1])
-					/* && returningHome==false */) {// can he move right?
+					if (MapaFantasmas.mapa[this.getPosX()][this.getPosY() + 1] != 1
+							&& MapaFantasmas.mapa[this.getPosX()][this.getPosY() + 1] != 22
+							/*&& !ghostWall.contains(Pacman.mapa[this.getPosX()][this.getPosY() + 1])*/) {// can he move right?
 
 						this.operaPos("+", "y");
-						lastNumber = Pacman.mapa[this.getPosX()][this.getPosY()];
 						// DEATH
 						if (this.getDie() == true) {
-							Pacman.mapa[this.getPosX()][this.getPosY()] = 28;
+							MapaFantasmas.mapa[this.getPosX()][this.getPosY()] = 28;
 							this.setMovDone(true);
 							if (this.getPosX() == c.getpacx() && this.getPosY() == c.getpacy()) {
-								Pacman.mapa[this.getPosX()][this.getPosY()] = 14;// el 14 es el rosa Cambiar																				
-								//sVortex();
-								//returnHome();
+								MapaFantasmas.mapa[this.getPosX()][this.getPosY()] = 14;// el 14 es el rosa Cambiar																				
 							}
 							// ALIVE
 						} else if (this.getDie() == false) {
-							Pacman.mapa[this.getPosX()][this.getPosY()] = imgD;
+							MapaFantasmas.mapa[this.getPosX()][this.getPosY()] = imgD;
 							this.setMovDone(true);
 						} else {
 							this.setMovDone(true);
