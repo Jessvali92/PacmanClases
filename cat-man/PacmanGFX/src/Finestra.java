@@ -70,6 +70,8 @@ public class Finestra extends JFrame {
 	
 	public void menu() {
 		
+		
+		
 	}
 
 	private void inici() {
@@ -99,9 +101,9 @@ public class Finestra extends JFrame {
 	    addKeyListener(ka);
 	    
 	    // probando menu
+	    botones = new JButton[5];
 	    for (int i = 0; i < botones.length; i++) {
 			botones[i] = new JButton();
-			
 		}
 	    //fin probando menu
 	}
