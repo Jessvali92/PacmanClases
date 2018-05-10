@@ -3,7 +3,11 @@ import java.awt.Component;
 import java.awt.GridLayout;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.util.HashSet;
+import java.util.Set;
 
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -29,14 +33,26 @@ public class Finestra extends JFrame {
 
 	private Taulell taulell;
 	private Taulell taulell2;
-	private boolean segontaulell= false;
+	private boolean segontaulell=false;
 	private boolean actetiquetes = false;
+	private boolean etiquetadebug = false;
 	private String[] etiquetes = { "" };
 	/// pots posar tantes etiquetes com vulguis eh, no estàs limitat a 3.
 	private JPanel labelpanel = new JPanel(new GridLayout(0, 1, 5, 5));
 	private JPanel tpanel = new JPanel(new GridLayout(0, 2, 5, 5));
 	private char ultimChar;  //ultim caracter apretat. Es mantindrà fins que se n'apreti un altre
 	private char actualChar; //caracter actual apretat. Consultarlo fara que s'esborri
+	private Set<Character> pressed = new HashSet<Character>();
+	
+	//menu
+	JPanel panelMenu;
+	JButton botones[];
+	JLabel fondoMenu;
+	ImageIcon imagenFondoMenu;
+	
+	
+	
+	
 
 	public Finestra(Taulell t) {
 		taulell = t;
@@ -48,6 +64,12 @@ public class Finestra extends JFrame {
 		taulell2 = t2;
 		segontaulell = true;
 		inici();
+	}
+	
+	
+	
+	public void menu() {
+		
 	}
 
 	private void inici() {
@@ -67,14 +89,21 @@ public class Finestra extends JFrame {
 		add(labelpanel, BorderLayout.LINE_END);
 		labelpanel.setBorder(new EmptyBorder(10,10,10,10));
 
-		setSize(700, 400);
+		setSize(650, 700);
+		setResizable(false);
 		setLocation(100, 100);
 		setVisible(true);
 		taulell.addComponentListener(taulell.cl);
 		
 
 	    addKeyListener(ka);
-
+	    
+	    // probando menu
+	    for (int i = 0; i < botones.length; i++) {
+			botones[i] = new JButton();
+			
+		}
+	    //fin probando menu
 	}
 
 	private void renovar() {
@@ -85,6 +114,13 @@ public class Finestra extends JFrame {
 				labelpanel.add(etiq);
 			}
 
+		}
+		if (etiquetadebug){
+			JLabel debug = new JLabel("Ultima tecla premuda "+ultimChar+" Tecla actual"+pressed);
+			labelpanel.add(debug);
+			JLabel debugm = new JLabel("Ultima casella premuda amb el ratolí "+taulell.getMousefil()+", "+taulell.getMousecol());
+			labelpanel.add(debugm);
+				
 		}
 		labelpanel.repaint();
 		labelpanel.revalidate();
@@ -103,6 +139,15 @@ public class Finestra extends JFrame {
 			renovar();
 	}
 
+	public boolean isEtiquetadebug() {
+		return etiquetadebug;
+	}
+
+	public void setEtiquetadebug(boolean etiquetadebug) {
+		this.etiquetadebug = etiquetadebug;
+		renovar();
+	}
+
 	public String[] getEtiquetes() {
 		return etiquetes;
 	}
@@ -117,20 +162,34 @@ public class Finestra extends JFrame {
 	}
 
 	public char getActualChar() {
-		char tempc = actualChar;
-		actualChar = '0';
-		return tempc;
+		char tmp=actualChar;
+		actualChar='0';
+		return tmp;
+	}
+	
+	public Set<Character> getPressed() {
+		return pressed;
 	}
 
 	
 	//Integracio del teclat. Ara pot detectar pulsacions de tecles sense necessitat de l'intro i l'escanner.
 	private KeyAdapter ka = new KeyAdapter() {
+	      @Override
 		  public void keyPressed(KeyEvent e)
 		  {
+	        pressed.add(e.getKeyChar());
 		    char char1 = e.getKeyChar();
 		    ultimChar = char1;
 		    actualChar = char1;
+		    if(etiquetadebug) renovar();
 		  }
+		  @Override
+		  public synchronized void keyReleased(KeyEvent e) {
+		        pressed.remove(e.getKeyChar());
+		        actualChar = '0';
+		        if(etiquetadebug) renovar();
+		  }
+
 	};
 
 }

@@ -25,36 +25,63 @@ public class Taulell extends JPanel {
 	private int COLS = -1;
 	private int[][] a;
 	private int[][] overdraw;
+	private int[][][] overdrawa;
 	private boolean init = false;
 	private boolean change = false;
-	private boolean actcolors = false; // els act activen cada funcio. si estan desactivats no s'aplica aquella funcio
+	private boolean actcolors = false; // els act activen cada funcio. si estan
+										// desactivats no s'aplica aquella
+										// funcio
 										// (colors, lletres, imatges, etc)
 	private boolean actborde = false;
 	private int borde = 0x8cc8a0;
 	private int fons = 0x0000ff;
+	private boolean actfreedraw = false;
+	private double[] freedrawx;
+	private double[] freedrawy;
 	private boolean actoverdraw = false;
+	private boolean actoverdrawa = false;
 	private boolean actimgbackground = false;
 	private String imgbackground;
 	private int[] colors = { 0x0000FF, 0x00FF00, 0xFFFF00, 0xFF0000, 0xFF00FF, 0x00FFFF, 0x000000, 0xFFFFFF, 0xFF8000,
-			0x7F00FF };// paleta de colors per a cada nombre (la primera posicio correspon al numero 0
+			0x7F00FF };// paleta de colors per a cada nombre (la primera posicio
+						// correspon al numero 0
 						// a la amtriu, la segona al 1, etc)
 	private boolean actlletres = false;
-	private String[] lletres = { "0", "1", "2", "3", "4", "5", "6", "7", "8", "*" }; // què s'ha d'escriure en cada
-																						// casella en base al nombre
+	private String[] lletres = { "0", "1", "2", "3", "4", "5", "6", "7", "8", "*" }; // què
+																						// s'ha
+																						// d'escriure
+																						// en
+																						// cada
+																						// casella
+																						// en
+																						// base
+																						// al
+																						// nombre
 	private int[] colorlletres = { 0x0000FF, 0x00FF00, 0xFFFF00, 0xFF0000, 0xFF00FF, 0x00FFFF, 0x000000, 0xFFFFFF,
-			0xFF8000, 0x7F00FF }; // en quin color s'ha d'escriure en cada casella en base al nombre
+			0xFF8000, 0x7F00FF }; // en quin color s'ha d'escriure en cada
+									// casella en base al nombre
 	private boolean actimatges = false;
 	private String[] imatges = { "Link1.gif", "Iron_Axe.png", "Iron_Lance.png", "Iron_Sword.png", "Lightning.png",
-			"Vulnerary.png", "Vulnerary.png", "Vulnerary.png", "Vulnerary.png", "Vulnerary.png" }; // paths de les
-																									// imatges que
+			"Vulnerary.png", "Vulnerary.png", "Vulnerary.png", "Vulnerary.png", "Vulnerary.png" }; // paths
+																									// de
+																									// les
+																									// imatges
+																									// que
 																									// s'hagin
-																									// d'escriure en
-																									// cada casella a
-																									// partir del nombre
+																									// d'escriure
+																									// en
+																									// cada
+																									// casella
+																									// a
+																									// partir
+																									// del
+																									// nombre
 	private Font font = new Font("SansSerif", Font.PLAIN, 22);
-	
-	private int mousefil = 0;  //fila de l'ultim click al mouse
-	private int mousecol = 0;  //columna de l'ultim click al mouse
+
+	private int mousefil = -1; // fila de l'ultim click al mouse
+	private int mousecol = -1; // columna de l'ultim click al mouse
+	private int actualMousefil = -1; // fila de l'ultim click al mouse
+	private int actualMousecol = -1; // columna de l'ultim click al mouse
 
 	public Taulell() {
 		addMouseListener(ml);
@@ -69,13 +96,19 @@ public class Taulell extends JPanel {
 	// aquí.
 	protected void paintComponent(Graphics g) {
 
-		if (init) { // assegurar-me que fins que no s'envien dades no es mostra res
+		if (init) { // assegurar-me que fins que no s'envien dades no es mostra
+					// res
 
 			super.paintComponent(g);
 			Graphics2D g2 = (Graphics2D) g;
-			g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON); // SERA UN JOC DE
-																										// MERDA, PERO
-																										// SERA MERDA
+			g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON); // SERA
+																										// UN
+																										// JOC
+																										// DE
+																										// MERDA,
+																										// PERO
+																										// SERA
+																										// MERDA
 																										// HD.
 			if (change || squares == null) {
 				initSquares();
@@ -88,7 +121,8 @@ public class Taulell extends JPanel {
 				}
 				g2.drawImage(img, (int) 0, (int) 0, (int) (getWidth()), (int) (getHeight()), 0, 0, img.getWidth(),
 						img.getHeight(), null);
-				/// El y+3 es per posar uns pixels de marge perque no comenci sobre la mateixa
+				/// El y+3 es per posar uns pixels de marge perque no comenci
+				/// sobre la mateixa
 				/// linea de borde.
 
 			}
@@ -98,31 +132,55 @@ public class Taulell extends JPanel {
 			for (int i = 0; i < FILES; i++) {
 				for (int j = 0; j < COLS; j++) {
 					squares[i][j].draw(g2, a[i][j], actcolors, colors, actborde, borde, fons, actlletres, lletres,
-							colorlletres, actimatges, imatges, actimgbackground);
+							colorlletres, actimatges, imatges, actimgbackground, actfreedraw, freedrawx, freedrawy);
 				}
 			}
-			if(actoverdraw) {
-				initoverSquares(overdraw.length,overdraw[0].length);
+			if (actoverdraw) {
+				initoverSquares(overdraw.length, overdraw[0].length);
 				for (int i = 0; i < overdraw.length; i++) {
 					for (int j = 0; j < overdraw[0].length; j++) {
-						oversquares[i][j].overdraw(g2, overdraw[i][j],imatges);
+						oversquares[i][j].overdraw(g2, overdraw[i][j], imatges);
 					}
 				}
+			}
+			if (actoverdrawa) {
+				for(int k =0;k<overdrawa.length;k++) {
+					initoverSquares(overdrawa[k].length, overdrawa[k][0].length);
+					for (int i = 0; i < overdrawa[k].length; i++) {
+						for (int j = 0; j < overdrawa[k][0].length; j++) {
+							oversquares[i][j].overdraw(g2, overdrawa[k][i][j], imatges);
+						}
+					}	
+				}
+				
 			}
 
 		}
 
 	}
+	
+	
+	public void borraOverdraw() {
+		int[][][] borra = {{{0}}};
+		this.overdibuixa(borra);
+	}
 
-	// Aquest mètode inicialitza la matriu per primera vegada creant els quadrats
+	// Aquest mètode inicialitza la matriu per primera vegada creant els
+	// quadrats
 	private void initSquares() {
 
 		squares = new SquareRx2[FILES][COLS];
 		int w = getWidth();
 		int h = getHeight();
-		double xInc = (double) (w - 2 * PAD) / COLS; // aixo es geometria eh. Basicament diu que cada cuadrat tindrà de
-														// mida horitzontal la amplada total - els dos marges, dividit
-														// per el nombre de quadrats que tens.
+		double xInc = (double) (w - 2 * PAD) / COLS; // aixo es geometria eh.
+														// Basicament diu que
+														// cada cuadrat tindrà
+														// de
+														// mida horitzontal la
+														// amplada total - els
+														// dos marges, dividit
+														// per el nombre de
+														// quadrats que tens.
 		double yInc = (double) (h - 2 * PAD) / FILES;
 		for (int i = 0; i < FILES; i++) {
 			double y = PAD + i * yInc;
@@ -133,16 +191,13 @@ public class Taulell extends JPanel {
 			}
 		}
 	}
-	
-	
+
 	private void initoverSquares(int fil, int col) {
 
 		oversquares = new SquareRx2[fil][col];
 		int w = getWidth();
 		int h = getHeight();
-		double xInc = (double) (w - 2 * PAD) / col; // aixo es geometria eh. Basicament diu que cada cuadrat tindrà de
-														// mida horitzontal la amplada total - els dos marges, dividit
-														// per el nombre de quadrats que tens.
+		double xInc = (double) (w - 2 * PAD) / col;
 		double yInc = (double) (h - 2 * PAD) / fil;
 		for (int i = 0; i < fil; i++) {
 			double y = PAD + i * yInc;
@@ -168,7 +223,10 @@ public class Taulell extends JPanel {
 	 */
 	public void dibuixa(int[][] a) {
 		this.a = a;
-		if (FILES != a.length || COLS != a[0].length) { /// qui collons canviaria el tamany del taulell igualment en
+		if (FILES != a.length || COLS != a[0].length) { /// qui collons
+														/// canviaria el tamany
+														/// del taulell
+														/// igualment en
 														/// mitad d'una partida?
 			FILES = a.length;
 			COLS = a[0].length;
@@ -179,8 +237,6 @@ public class Taulell extends JPanel {
 
 		repaint();
 	};
-	
-	
 
 	public void dibuixa(Integer[][] a) {
 		int[][] b = new int[a.length][a[0].length];
@@ -192,16 +248,20 @@ public class Taulell extends JPanel {
 
 		dibuixa(b);
 	};
-	
+
 	public void overdibuixa(int[][] a) {
-		this.actoverdraw=true;
-		this.overdraw=a;
+		this.actoverdraw = true;
+		this.overdraw = a;
 		repaint();
-		
-		
+
 	};
 	
-	
+	public void overdibuixa(int[][][] a) {
+		this.actoverdrawa = true;
+		this.overdrawa = a;
+		repaint();
+
+	};
 
 	/**
 	 * Integració del ratolí
@@ -354,12 +414,48 @@ public class Taulell extends JPanel {
 		this.actoverdraw = actoverdraw;
 	}
 
+	public boolean isActfreedraw() {
+		return actfreedraw;
+	}
+
+	public void setActfreedraw(boolean actfreedraw) {
+		this.actfreedraw = actfreedraw;
+	}
+
+	public double[] getFreedrawx() {
+		return freedrawx;
+	}
+
+	public void setFreedrawx(double[] freedrawx) {
+		this.freedrawx = freedrawx;
+	}
+
+	public double[] getFreedrawy() {
+		return freedrawy;
+	}
+
+	public void setFreedrawy(double[] freedrawy) {
+		this.freedrawy = freedrawy;
+	}
+
 	public int getMousefil() {
 		return mousefil;
 	}
 
 	public int getMousecol() {
 		return mousecol;
+	}
+	
+	public int getActualMousefil() {
+		int temp = actualMousefil;
+		actualMousefil=-1;
+		return temp;
+	}
+
+	public int getActualMousecol() {
+		int temp = actualMousecol;
+		actualMousecol=-1;
+		return temp;
 	}
 
 	public void setMousefil(int mousefil) {
@@ -370,6 +466,13 @@ public class Taulell extends JPanel {
 		this.mousecol = mousecol;
 	}
 	
+	public void setActualMousefil(int mousefil) {
+		this.actualMousefil = mousefil;
+	}
+
+	public void setActualMousecol(int mousecol) {
+		this.actualMousecol = mousecol;
+	}
 
 }
 
@@ -405,27 +508,36 @@ class SquareRx2 {
 	}
 
 	public void overdraw(Graphics2D g2, int value, String[] overimatges) {
-		// TODO Auto-generated method stub
-		if (!(overimatges[value].equals(""))) { // Entrendrem que un string buit significa que no vols imatge en aquella
+		if (!(overimatges[value].equals(""))) { // Entrendrem que un string buit
+												// significa que no vols imatge
+												// en aquella
 			// posició
 			BufferedImage img = null;
 			try {
 				img = ImageIO.read(new File(overimatges[value]));
+
+				g2.drawImage(img, (int) x, (int) y, (int) (x + xInc), (int) (y + yInc), 0, 0, img.getWidth(),
+						img.getHeight(), null);
 			} catch (IOException e) {
+				System.out.println("Error on image " + overimatges[value] + " value: " + value);
 			}
-			g2.drawImage(img, (int) x, (int) y, (int) (x + xInc), (int) (y + yInc), 0, 0, img.getWidth(),
-					img.getHeight(), null);
 		}
 	}
+	
+	
+	
 
 	/**
 	 * Aquest metode dibuixa cada cuadrat individualment.
 	 * 
 	 * @param actimgbackground
+	 * @param actfreedraw
+	 * @param freedrawy
+	 * @param freedrawx
 	 */
 	public void draw(Graphics2D g2, int a, boolean actcolors, int[] colors, boolean actborde, int borde, int fons,
 			boolean actlletres, String[] lletres, int[] colorlletres, boolean actimatges, String[] imatges,
-			boolean actimgbackground) {
+			boolean actimgbackground, boolean actfreedraw, double[] freedrawx, double[] freedrawy) {
 		value = a;
 		if (actcolors) {
 			Color inside = new Color(colors[value]);
@@ -448,21 +560,28 @@ class SquareRx2 {
 		}
 
 		if (actimatges) {
-			if (!(imatges[value].equals(""))) { // Entrendrem que un string buit significa que no vols imatge en aquella
+			if (!(imatges[value].equals(""))) { // Entrendrem que un string buit
+												// significa que no vols imatge
+												// en aquella
 												// posició
 				BufferedImage img = null;
 				try {
 					img = ImageIO.read(new File(imatges[value]));
-				} catch (IOException e) {
-				}
-				try {
-					g2.drawImage(img, (int) x, (int) y + 3, (int) (x + xInc), (int) (y + yInc), 0, 0, img.getWidth(),
-							img.getHeight(), null);
+					
+					if (actfreedraw) {
+						g2.drawImage(img, (int) (x - (xInc*(freedrawx[value]-1))), (int) (y - (yInc*(freedrawy[value]-1))), (int) (x + xInc),(int) (y + yInc), 0, 0, img.getWidth(), img.getHeight(), null);
+					} else {
+
+						g2.drawImage(img, (int) x, (int) y + 3, (int) (x + xInc), (int) (y + yInc), 0, 0,
+								img.getWidth(), img.getHeight(), null);
+					}
+
 				} catch (Exception e) {
-					// TODO Auto-generated catch block
-					System.out.println("El fallo esta en "+imatges[value]);
+					System.out.println("Error on image " + imatges[value] + " value: " + value);
+					e.printStackTrace();
 				}
-				/// El y+3 es per posar uns pixels de marge perque no comenci sobre la mateixa
+				/// El y+3 es per posar uns pixels de marge perque no comenci
+				/// sobre la mateixa
 				/// linea de borde.
 			}
 		}
@@ -470,10 +589,13 @@ class SquareRx2 {
 			Color inside = new Color(colorlletres[value]);
 			g2.setPaint(inside);
 			g2.drawString(lletres[value], (int) (x + xInc / 2), (int) (y + yInc - 5));
-			/// El -5 es per donar un pixel de marge. Lo normal seria pensar que el punt que
-			/// li dones es el punt superior esquerra de la lletra, pero no, es el punt
+			/// El -5 es per donar un pixel de marge. Lo normal seria pensar que
+			/// el punt que
+			/// li dones es el punt superior esquerra de la lletra, pero no, es
+			/// el punt
 			/// INFERIOR esquerra.
-			/// Si la font es gran acaba menjant-se el borde superior. Per aixo el -5,
+			/// Si la font es gran acaba menjant-se el borde superior. Per aixo
+			/// el -5,
 			/// perque comenci abaix amb una mica de marge. Cutre cutre.
 		}
 	}
@@ -487,10 +609,17 @@ class SquareRx2 {
 	}
 
 	public void mouseClick() {
-		//System.out.println("SQUARE[row:" + fil + ", col:" + col + ", value:" + value + "]");
-		
+		// System.out.println("SQUARE[row:" + fil + ", col:" + col + ", value:"
+		// + value + "]");
+
 		t.setMousefil(fil);
 		t.setMousecol(col);
-		//si vols que les teves opcions vagin per ratolí, a partir d'aquesta funció hauries de cridar una funcio estatica de la TEVA classe. També pots consultar les variables mitjançant els getters de mosuefil y mousecol
+		t.setActualMousefil(fil);
+		t.setActualMousecol(col);
+		
+		// si vols que les teves opcions vagin per ratolí, a partir d'aquesta
+		// funció hauries de cridar una funcio estatica de la TEVA classe. També
+		// pots consultar les variables mitjançant els getters de mosuefil y
+		// mousecol
 	}
 }

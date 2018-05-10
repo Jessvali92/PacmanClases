@@ -8,23 +8,21 @@ import java.util.TimerTask;
 
 public class Pacman {
 
-	static Taulell t = new Taulell();
-	static Finestra f = new Finestra(t);
-	static Scanner sc = new Scanner(System.in);
-	static int mapaInicio[][] = iniciaMapa();
-	static int mapa[][] = iniciaMapa();
-	static boolean finjuego = false;	
-	static int mov = 0;
-	static boolean fin = false;
-	static boolean bolagorda=true;
-	static Timer timer = new Timer();
-	static ArrayList<Fantasma> listf ;
-	static ArrayList<Catman> listc ;
-	static ArrayList<Integer> duplicados;
-	static ArrayList<Integer> duplicados2;
-	static int filas = 31;
-	static int columnas = 28;
-	static Catman player1 = new Catman(23,14);
+	public static Taulell t = new Taulell();
+	public static Finestra f = new Finestra(t);
+	public Scanner sc = new Scanner(System.in);
+	public int mapaInicio[][] = iniciaMapa();
+	public static int mapa[][] = iniciaMapa();
+	public boolean finjuego = false;	
+	public static int mov = 0;
+	public static boolean fin = false;
+	public boolean bolagorda=true;
+	public static Timer timer = new Timer();
+	public static ArrayList<Fantasma> listf ;
+	public ArrayList<Catman> listc ;
+	public int filas = 31;
+	public int columnas = 28;
+	public static Catman player1 = new Catman(23,14);
 	
 	private static int[][] iniciaMapa() {
 		int mapaInicio[][] = {
@@ -42,9 +40,9 @@ public class Pacman {
 				{ 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1 },//10
 				{ 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1 },//11
 				{ 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 22, 22, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1 },//12
-				{ 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 20, 20, 20, 20, 20, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1 },//13
+				{ 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 20, 20, 20, 20, 20, 20, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1 },//13
 				{ 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 20, 20, 20, 20, 20, 20, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },//14
-				{ 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1 },//15
+				{ 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 20, 20, 20, 20, 20, 20, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1 },//15
 				{ 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1 },//16
 				{ 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1 },//17
 				{ 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1 },//18
@@ -70,9 +68,9 @@ public class Pacman {
 	
 	
 	private static void initThings () {
-		Fantasma redGhost = new Fantasma(11,12,3,4,5,6,0); 	//posx,posy,AR,AB,I,D
-		Fantasma blueGhost = new Fantasma(14,11,7,8,9,10,20); 	//posx,posy,AR,AB,I,D
-		Fantasma yellowGhost = new Fantasma(14,16,15,16,17,18,20); //posx,posy,AR,AB,I,D
+		Fantasma redGhost = new Fantasma(11,12,3,4,5,6,0,FantasmasFirstMove.RED); 	//posx,posy,AR,AB,I,D
+		Fantasma blueGhost = new Fantasma(14,12,7,8,9,10,20,FantasmasFirstMove.BLUE); 	//posx,posy,AR,AB,I,D
+		Fantasma yellowGhost = new Fantasma(14,16,15,16,17,18,20,FantasmasFirstMove.YELLOW); //posx,posy,AR,AB,I,D
 		
 		listf = new ArrayList<Fantasma>();
 		listf.add(redGhost);
@@ -91,8 +89,8 @@ public class Pacman {
 	private static void ponerGraficos() {
 		t.setActcolors(false); //ya no quiero colores
         t.setActimatges(true); 
-        t.setActborde(false);  //no quiero borde entre casillas
-        t.setActimgbackground(true);  //  TRUE PARA REVERTIR CAMBIOS
+        t.setActborde(true);  //no quiero borde entre casillas
+        t.setActimgbackground(false);  //  TRUE PARA REVERTIR CAMBIOS
         t.setImgbackground("fondo.jpg");  //direccion al fondo. Todas las imagenes en la carpeta del proyecto
         String[] imatges = { 
         		
@@ -171,40 +169,6 @@ public class Pacman {
         });
         
 	}
-	
-	
-	/*private static void doStuffcomprobarB() {
-		
-		
-		if (map[pacx][pacy]==map[3][1]&&desactivar3x1y) {
-			
-			for(Fantasma f : listf) {
-				f.setDie(true);
-			}
-			
-			desactivar3x1y = false;
-			
-		}else if ( map[pacx][pacy]==map[3][26]&&desactivar3x26y) {
-			
-			for(Fantasma f : listf) {
-				f.setDie(true);
-			}
-			desactivar3x26y = false;
-			
-		}else if( map[pacx][pacy]==map[22][1]&&desactivar23x1y) {
-			
-			for(Fantasma f : listf) {
-				f.setDie(true);
-			}
-			desactivar23x1y = false;
-		}else if (map[pacx][pacy]==map[22][26]&&desactivar23x26y) {
-			
-			for(Fantasma f : listf) {
-				f.setDie(true);
-			}
-			desactivar23x26y = false;
-		}
-	}*/
 
 		
 	public static void fun() {
@@ -241,6 +205,7 @@ public class Pacman {
 				
 		ponerGraficos();
 		initThings();
+		
 		
 		
         timer.schedule(new TimerTask() 

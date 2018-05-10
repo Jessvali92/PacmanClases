@@ -1,4 +1,7 @@
+import java.awt.List;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 
 public class Fantasma {
 
@@ -20,12 +23,9 @@ public class Fantasma {
 	public int positionHomeY = 14;
 	public String op = "";
 	int vortex = 0;
-	private boolean f1move = true;
-	private boolean f2move = false;
-	private boolean f3move = false;
-	private boolean f4move = false;
-	private boolean f5move = false;
-
+	ArrayList<Boolean> banderas = new ArrayList<Boolean>();
+	FantasmasFirstMove color;
+	
 	/*
 	 * "rojoAR.png","rojoAB.png","rojoI.png","RojoD.png",//3,4,5,6 ROJO
 	 * 
@@ -44,13 +44,20 @@ public class Fantasma {
 			ghostWall.add(i);
 		}
 	}
+	
+	public void banderas() {
+		for (int i = 0; i < 30; i++) {
+			banderas.add(true);
+		}
+	}
 
 	public Fantasma() {
 		
 	}
 
-	public Fantasma(Integer posicionX, Integer posicionY, int AR, int AB, int I, int D, int lastNumber) {
+	public Fantasma(Integer posicionX, Integer posicionY, int AR, int AB, int I, int D, int lastNumber,FantasmasFirstMove color) {
 		initGhostWall();
+		banderas();		
 		this.posX = posicionX;
 		this.posY = posicionY;
 		imgAR = AR;
@@ -58,6 +65,7 @@ public class Fantasma {
 		imgI = I;
 		imgD = D;
 		this.lastNumber = lastNumber;
+		this.color = color;
 
 	}
 	
@@ -121,10 +129,151 @@ public class Fantasma {
 	}
 
 	public void hazLoTuyo(Catman c) {
-		this.move(c);
-		this.know(c);
-
+		/*if (this.color==FantasmasFirstMove.BLUE&&banderas.get(2)==true) {
+			System.out.println("inblue");
+			this.firstMoveBlue();
+			System.out.println("outblue");
+		}if (this.color==FantasmasFirstMove.YELLOW&&banderas.get(3)==true) {
+			System.out.println("inyellow");
+			this.firstMoveYellow();
+			System.out.println("outyellow");
+		}if (this.color==FantasmasFirstMove.RED&&banderas.get(14)==true) {
+			System.out.println("inred");
+			this.firstMoveRed();
+			System.out.println("outred");
+		}else {*/
+			this.move(c);
+			this.know(c);
+			
 	}
+	
+	private void firstMoveRed() {
+		Pacman.mapa[posX][posY] = lastNumber;
+		if (banderas.get(15)==true) {	
+			this.operaPos("-", "y");
+			lastNumber = Pacman.mapa[this.getPosX()][this.getPosY()];
+			Pacman.mapa[this.getPosX()][this.getPosY()] = imgI;
+			banderas.set(15,false);
+		}else if(banderas.get(16)==true) {
+			this.operaPos("-", "y");
+			lastNumber = Pacman.mapa[this.getPosX()][this.getPosY()];
+			Pacman.mapa[this.getPosX()][this.getPosY()] = imgI;
+			banderas.set(16,false);
+		}else if(banderas.get(17)==true) {
+			this.operaPos("-", "y");
+			lastNumber = Pacman.mapa[this.getPosX()][this.getPosY()];
+			Pacman.mapa[this.getPosX()][this.getPosY()] = imgI;
+			banderas.set(17,false);
+			banderas.set(14,false);
+		}
+	}
+	
+	/*private void firstMoveYellow() {
+		Pacman.mapa[posX][posY] = lastNumber;
+		
+		if (banderas.get(9)==true) {		
+			this.operaPos("-", "x");
+			lastNumber = Pacman.mapa[this.getPosX()][this.getPosY()];
+			Pacman.mapa[this.getPosX()][this.getPosY()] = imgAR;
+			banderas.set(9, false);
+			System.out.println("arriba");
+			
+		}else if (banderas.get(18)) {
+			this.operaPos("+", "x");
+			lastNumber = Pacman.mapa[this.getPosX()][this.getPosY()];
+			Pacman.mapa[this.getPosX()][this.getPosY()] = imgAB;
+			banderas.set(18, false);
+			System.out.println("abajo");
+			
+		}else if (banderas.get(20)) {
+			this.operaPos("-", "x");
+			lastNumber = Pacman.mapa[this.getPosX()][this.getPosY()];
+			Pacman.mapa[this.getPosX()][this.getPosY()] = imgAR;
+			banderas.set(20, false);
+			System.out.println("arriba");
+			
+		}else if (banderas.get(21)) {
+			this.operaPos("+", "x");
+			lastNumber = Pacman.mapa[this.getPosX()][this.getPosY()];
+			Pacman.mapa[this.getPosX()][this.getPosY()] = imgAB;
+			banderas.set(21, false);
+			System.out.println("abajo");
+			
+		}else if (banderas.get(22)) {
+			this.operaPos("-", "x");
+			lastNumber = Pacman.mapa[this.getPosX()][this.getPosY()];
+			Pacman.mapa[this.getPosX()][this.getPosY()] = imgAR;
+			banderas.set(22, false);
+			System.out.println("arriba");
+			
+		}else if (banderas.get(10)==true) {
+			this.operaPos("-", "y");
+			lastNumber = Pacman.mapa[this.getPosX()][this.getPosY()];
+			Pacman.mapa[this.getPosX()][this.getPosY()] = imgI;
+			banderas.set(10, false);
+			System.out.println("izquierda");
+			
+		}else if (banderas.get(11)==true) {
+			this.operaPos("-", "y");
+			lastNumber = Pacman.mapa[this.getPosX()][this.getPosY()];
+			Pacman.mapa[this.getPosX()][this.getPosY()] = imgAR;
+			banderas.set(11, false);
+			System.out.println("izquierda");
+			
+		}else if (banderas.get(12)==true) {
+			this.operaPos("-", "x");
+			lastNumber = Pacman.mapa[this.getPosX()][this.getPosY()];
+			Pacman.mapa[this.getPosX()][this.getPosY()] = imgAR;
+			banderas.set(12, false);
+			System.out.println("arriba");
+			
+		}else if (banderas.get(13)==true) {
+			this.operaPos("-", "x");
+			lastNumber = Pacman.mapa[this.getPosX()][this.getPosY()];
+			Pacman.mapa[this.getPosX()][this.getPosY()] = imgAR;
+			System.out.println("arriba");
+			banderas.set(13, false);
+			banderas.set(3,false);
+			banderas.set(1, false);
+		}	
+	}*/
+	
+	/*private  void firstMoveBlue() {
+		Pacman.mapa[posX][posY] = lastNumber;
+		if (banderas.get(4)==true) {		
+			this.operaPos("+", "y");
+			lastNumber = Pacman.mapa[this.getPosX()][this.getPosY()];
+			Pacman.mapa[this.getPosX()][this.getPosY()] = imgD;
+			banderas.set(4, false);
+			System.out.println("D");
+		}else if (banderas.get(5)==true) {
+			this.operaPos("-", "x");
+			lastNumber = Pacman.mapa[this.getPosX()][this.getPosY()];
+			Pacman.mapa[this.getPosX()][this.getPosY()] = imgAR;
+			banderas.set(5, false);
+			System.out.println("AR");
+		}else if (banderas.get(6)==true) {
+			this.operaPos("-", "x");
+			lastNumber = Pacman.mapa[this.getPosX()][this.getPosY()];
+			Pacman.mapa[this.getPosX()][this.getPosY()] = imgI;
+			banderas.set(6, false);
+			System.out.println("AR");
+		}else if (banderas.get(7)==true) {
+			this.operaPos("-", "x");
+			lastNumber = Pacman.mapa[this.getPosX()][this.getPosY()];
+			Pacman.mapa[this.getPosX()][this.getPosY()] = imgAR;
+			banderas.set(7, false);
+			System.out.println("AR");
+		}else if (banderas.get(8)==true) {
+			this.operaPos("-", "x");
+			lastNumber = Pacman.mapa[this.getPosX()][this.getPosY()];
+			Pacman.mapa[this.getPosX()][this.getPosY()] = imgAR;
+			System.out.println("AR");
+			banderas.set(8, false);
+			banderas.set(2,false);
+			banderas.set(0, false);
+		}	
+	}*/
 
 	private void know(Catman c) {
 
@@ -330,64 +479,11 @@ public class Fantasma {
 		 */
 
 	}
-
-	/*private void firstMove(Catman c) {//extension del movimiento
-		
-		if (this.posX==14&&this.posY==11) {//red
-				this.operaPos("-", "x");
-				lastNumber = Pacman.mapa[this.getPosX()][this.getPosY()];				
-			
-		}else if(this.posX==14&&this.posY==16) {
-			
-		}//else if () posicion del fantasma rosa
-		
-		
-	}*/
 	
-	private void firstMoveBlue() {
-		if (f1move) {		
-			this.operaPos("+", "y");
-			lastNumber = Pacman.mapa[this.getPosX()][this.getPosY()];
-			f1move = false;
-			f2move = true;	
-		}else if (f2move) {
-			this.operaPos("+", "y");
-			lastNumber = Pacman.mapa[this.getPosX()][this.getPosY()];
-			f2move = false;
-			f3move = true;
-		}else if (f3move) {
-			this.operaPos("-", "x");
-			lastNumber = Pacman.mapa[this.getPosX()][this.getPosY()];
-			f3move = false;
-			f4move = true;
-		}else if (f4move) {
-			this.operaPos("-", "x");
-			lastNumber = Pacman.mapa[this.getPosX()][this.getPosY()];
-			f4move= false;
-			f5move = true;
-		}else if (f5move) {
-			this.operaPos("-", "x");
-			lastNumber = Pacman.mapa[this.getPosX()][this.getPosY()];
-			f5move = false;
-		}
-	}
+	
+
 	
 	private void move(Catman c) {
-		
-		if (this.posX==14&&this.posY==11) {//blue
-			firstMoveBlue();
-		}else if (this.posX==14&&this.posY==12) {
-			firstMoveBlue();
-		}else if (this.posX==14&&this.posY==13) {
-			firstMoveBlue();
-		}else if (this.posX==13&&this.posY==13) {
-			firstMoveBlue();
-		}else if (this.posX==12&&this.posY==13) {
-			firstMoveBlue();
-		}else if (this.posX==11&&this.posY==13) {
-			firstMoveBlue();
-		}
-
 		Pacman.mapa[posX][posY] = lastNumber;
 		movDone = false;
 		if (returningHome) {
@@ -510,9 +606,6 @@ public class Fantasma {
 			}
 		}
 	}
-
-	
-
-	
-
 }
+	
+
