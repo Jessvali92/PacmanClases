@@ -44,12 +44,6 @@ public class Finestra extends JFrame {
 	private char actualChar; //caracter actual apretat. Consultarlo fara que s'esborri
 	private Set<Character> pressed = new HashSet<Character>();
 	
-	//menu
-	JPanel panelMenu;
-	JButton botones[];
-	JLabel fondoMenu;
-	ImageIcon imagenFondoMenu;
-	
 	
 	
 	
@@ -68,11 +62,6 @@ public class Finestra extends JFrame {
 	
 	
 	
-	public void menu() {
-		
-		
-		
-	}
 
 	private void inici() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -99,13 +88,6 @@ public class Finestra extends JFrame {
 		
 
 	    addKeyListener(ka);
-	    
-	    // probando menu
-	    botones = new JButton[5];
-	    for (int i = 0; i < botones.length; i++) {
-			botones[i] = new JButton();
-		}
-	    //fin probando menu
 	}
 
 	private void renovar() {

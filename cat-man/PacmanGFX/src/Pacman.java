@@ -2,6 +2,7 @@ import java.awt.KeyEventDispatcher;
 import java.awt.KeyboardFocusManager;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Scanner;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -20,8 +21,8 @@ public class Pacman {
 	public static Timer timer = new Timer();
 	public static ArrayList<Fantasma> listf ;
 	public ArrayList<Catman> listc ;
-	public int filas = 31;
-	public int columnas = 28;
+	public static int filas = 31;
+	public static int columnas = 28;
 	public static Catman player1 = new Catman(23,14);
 	
 	private static int[][] iniciaMapa() {
@@ -40,17 +41,17 @@ public class Pacman {
 			{ 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1 },//10
 			{ 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1 },//11
 			{ 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 22, 22, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1 },//12
-			{ 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 20, 20, 20, 20, 20, 20, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1 },//13
-			{ 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 20, 20, 20, 20, 20, 20, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },//14
-			{ 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 20, 20, 20, 20, 20, 20, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1 },//15
-			{ 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1 },//16
+	     	{ 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 20, 20, 20, 20, 20, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1 },//13
+	    	{ 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 20, 20, 20, 20, 20, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },//14
+		    { 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1 },//15
+		    { 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1 },//16
 			{ 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1 },//17
 			{ 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1 },//18
 			{ 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1 },//19
 			{ 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },//20
 			{ 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1 },//21
 			{ 1, 2, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 2, 1 },//22
-			{ 1, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 1 },//23
+			{ 1, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 19, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 1 },//23
 			{ 1, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 1 },//24
 			{ 1, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 1 },//25
 			{ 1, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 1 },//26
@@ -69,9 +70,9 @@ public class Pacman {
 	
 	
 	private static void initThings () {
-		Fantasma redGhost = new Fantasma(11,12,3,4,5,6,0,FantasmasFirstMove.RED); 	//posx,posy,AR,AB,I,D
-		Fantasma blueGhost = new Fantasma(14,12,7,8,9,10,20,FantasmasFirstMove.BLUE); 	//posx,posy,AR,AB,I,D
-		Fantasma yellowGhost = new Fantasma(14,16,15,16,17,18,20,FantasmasFirstMove.YELLOW); //posx,posy,AR,AB,I,D
+		Fantasma redGhost = new Fantasma(11,12,3,4,5,6,FantasmasFirstMove.RED); 	//posx,posy,AR,AB,I,D
+		Fantasma blueGhost = new Fantasma(14,12,7,8,9,10,FantasmasFirstMove.BLUE); 	//posx,posy,AR,AB,I,D
+		Fantasma yellowGhost = new Fantasma(14,16,15,16,17,18,FantasmasFirstMove.YELLOW); //posx,posy,AR,AB,I,D
 		
 		listf = new ArrayList<Fantasma>();
 		listf.add(redGhost);
@@ -125,8 +126,11 @@ public class Pacman {
         t.setImatges(imatges);
         f.setActetiquetes(false); 
         f.setTitle("Cat-Man");
-		t.dibuixa(mapa);
-		t.overdibuixa(MapaFantasmas.iniciaMapa());
+		t.dibuixa(MapaFantasmas.mapaF);
+	
+		
+		
+		
 	}
 	
 	private static void tecladoWASD() {
@@ -176,22 +180,26 @@ public class Pacman {
 		
 	public static void fun() {
 		
-		//long startTime = System.currentTimeMillis();
-		
-		
+		//long startTime = System.currentTimeMillis();	
 		player1.mueveteCatman();
-		tecladoWASD();		
+		tecladoWASD();	
+		for (int i = 0; i < filas; i++) {
+			for (int j = 0; j < columnas; j++) {
+				MapaFantasmas.mapaF[i][j]=mapa[i][j];
+			}
+		}		
 		for(Fantasma f : listf) {
 			f.hazLoTuyo(player1);
 		}
+		System.out.println("pasa for");
 		fin();
 		//long endTime = System.currentTimeMillis();
-		
 		//long time = endTime-startTime;
 		//System.out.println("tiempo de Jessica "+time);
-		
 		//long dstartTime = System.currentTimeMillis();
-		t.dibuixa(mapa);
+		t.dibuixa(MapaFantasmas.mapaF);
+		
+		//t.overdibuixa(MapaFantasmas.mapaF);
 		//long dendTime = System.currentTimeMillis();
 		//long dtime = dendTime-dstartTime;
 		//System.out.println("Tiempo de Marc "+dtime);
@@ -205,22 +213,23 @@ public class Pacman {
 	
 
 	public static void main(String[] args) throws Throwable {
-				
+		
+		initThings();			
 		ponerGraficos();
-		initThings();
 		
 		
-		
-        timer.schedule(new TimerTask() 
+        timer.schedule(new TimerTask()
+        		
         {
             @Override
             public void run() 
             {          	
             	fun();
+        
             }			
         },
         0,
-       900);      
+       1000);      
         
 	}
 	

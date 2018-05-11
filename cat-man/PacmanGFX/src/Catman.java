@@ -114,27 +114,27 @@ public class Catman {
 	private void doStuffcomprobarB() {
 		
 		if (Pacman.mapa[pacx][pacy]==Pacman.mapa[3][1]&&desactivar3x1y) {
-			
+			Fantasma.tiempobolagorda = 0;
 			for(Fantasma f : Pacman.listf) {
 				f.setDie(true);
 			}
 			desactivar3x1y = false;
 			
 		}else if ( Pacman.mapa[pacx][pacy]==Pacman.mapa[3][26]&&desactivar3x26y) {
-			
+			Fantasma.tiempobolagorda = 0;
 			for(Fantasma f : Pacman.listf) {
 				f.setDie(true);
 			}
 			desactivar3x26y = false;
 			
 		}else if( Pacman.mapa[pacx][pacy]==Pacman.mapa[22][1]&&desactivar23x1y) {
-			
+			Fantasma.tiempobolagorda = 0;
 			for(Fantasma f : Pacman.listf) {
 				f.setDie(true);
 			}
 			desactivar23x1y = false;
 		}else if (Pacman.mapa[pacx][pacy]==Pacman.mapa[22][26]&&desactivar23x26y) {
-			
+			Fantasma.tiempobolagorda = 0;
 			for(Fantasma f : Pacman.listf) {
 				f.setDie(true);
 			}
