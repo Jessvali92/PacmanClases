@@ -23,7 +23,7 @@ public class Pacman {
 	public ArrayList<Catman> listc ;
 	public static int filas = 31;
 	public static int columnas = 28;
-	public static Catman player1 = new Catman(23,14);
+	public static Catman player1 = new Catman(21,1); //new Catman(23,14);
 	
 	private static int[][] iniciaMapa() {
 		int mapaInicio[][] = {
@@ -49,9 +49,9 @@ public class Pacman {
 			{ 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1 },//18
 			{ 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1 },//19
 			{ 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },//20
-			{ 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1 },//21
+			{ 1, 19, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1 },//21
 			{ 1, 2, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 2, 1 },//22
-			{ 1, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 19, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 1 },//23
+			{ 1, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 1 },//23
 			{ 1, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 1 },//24
 			{ 1, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 1 },//25
 			{ 1, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 1 },//26
@@ -187,11 +187,11 @@ public class Pacman {
 			for (int j = 0; j < columnas; j++) {
 				MapaFantasmas.mapaF[i][j]=mapa[i][j];
 			}
-		}		
+		}
 		for(Fantasma f : listf) {
 			f.hazLoTuyo(player1);
 		}
-		System.out.println("pasa for");
+		Catman.comebola=false;
 		fin();
 		//long endTime = System.currentTimeMillis();
 		//long time = endTime-startTime;

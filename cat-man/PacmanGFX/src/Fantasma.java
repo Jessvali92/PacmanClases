@@ -10,7 +10,7 @@ public class Fantasma {
 	private Boolean movDone = false;
 	private Boolean firstTime = false;
 	private Boolean die = false;
-	public static int tiempobolagorda = 0;
+	public int tiempobolagorda = 0;
 	private int imgAR;
 	private int imgAB;
 	private int imgI;
@@ -103,9 +103,7 @@ public class Fantasma {
 
 	public void hazLoTuyo(Catman c) {
 			this.move(c);
-			System.out.println("el move pasa");
 			this.know(c);
-			System.out.println("el know pasa");
 	}
 	
 	/*if (this.color==FantasmasFirstMove.BLUE&&banderas.get(2)==true) {
@@ -251,13 +249,14 @@ public class Fantasma {
 	}*/
 
 	private void know(Catman c) {
-
+		if(Catman.comebola) {
+			tiempobolagorda=0;
+		}
 		if (die) {
 			tiempobolagorda++;
 			if (tiempobolagorda > 30) {
 				die = false;
 				tiempobolagorda = 0;
-				// System.out.println(tiempobolagorda);
 			}
 
 			if (this.getPosX() == Catman.pacx && this.getPosY() == Catman.pacy) {
@@ -270,7 +269,6 @@ public class Fantasma {
 
 				Catman.finjuego = true;
 				Pacman.fin = true;
-				System.out.println("finaliza por alguna razon en know");
 			}
 		}
 	}

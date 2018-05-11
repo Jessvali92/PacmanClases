@@ -8,6 +8,7 @@ public class Catman {
 	static boolean desactivar3x26y = true;
 	static boolean desactivar23x1y = true;
 	static boolean desactivar23x26y = true;
+	static boolean comebola= false;
 	
 	public Catman (Integer posPacX, Integer posPacY) {
 		pacx = posPacX;
@@ -114,27 +115,27 @@ public class Catman {
 	private void doStuffcomprobarB() {
 		
 		if (Pacman.mapa[pacx][pacy]==Pacman.mapa[3][1]&&desactivar3x1y) {
-			Fantasma.tiempobolagorda = 0;
+			comebola=true;
 			for(Fantasma f : Pacman.listf) {
 				f.setDie(true);
 			}
 			desactivar3x1y = false;
 			
 		}else if ( Pacman.mapa[pacx][pacy]==Pacman.mapa[3][26]&&desactivar3x26y) {
-			Fantasma.tiempobolagorda = 0;
+			comebola=true;
 			for(Fantasma f : Pacman.listf) {
 				f.setDie(true);
 			}
 			desactivar3x26y = false;
 			
 		}else if( Pacman.mapa[pacx][pacy]==Pacman.mapa[22][1]&&desactivar23x1y) {
-			Fantasma.tiempobolagorda = 0;
+			comebola=true;
 			for(Fantasma f : Pacman.listf) {
 				f.setDie(true);
 			}
 			desactivar23x1y = false;
 		}else if (Pacman.mapa[pacx][pacy]==Pacman.mapa[22][26]&&desactivar23x26y) {
-			Fantasma.tiempobolagorda = 0;
+			comebola=true;
 			for(Fantasma f : Pacman.listf) {
 				f.setDie(true);
 			}
