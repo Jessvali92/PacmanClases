@@ -41,9 +41,9 @@ public class Pacman {
 			{ 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1 },//10
 			{ 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1 },//11
 			{ 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 22, 22, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1 },//12
-	     	{ 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 20, 20, 20, 20, 20, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1 },//13
-	    	{ 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 20, 20, 20, 20, 20, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },//14
-		    { 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1 },//15
+	     	{ 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 20, 20, 20, 20, 20, 20, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1 },//13
+	    	{ 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,20, 20, 20, 20, 20, 20, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },//14
+		    { 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 20, 20, 20, 20, 20, 20, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1 },//15
 		    { 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1 },//16
 			{ 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1 },//17
 			{ 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1 },//18
@@ -70,15 +70,15 @@ public class Pacman {
 	
 	
 	private static void initThings () {
-		Fantasma redGhost = new Fantasma(11,12,3,4,5,6,FantasmasFirstMove.RED); 	//posx,posy,AR,AB,I,D
-		Fantasma blueGhost = new Fantasma(14,12,7,8,9,10,FantasmasFirstMove.BLUE); 	//posx,posy,AR,AB,I,D
+		Fantasma redGhost = new Fantasma(20,4,3,4,5,6,FantasmasFirstMove.RED); 	//posx,posy,AR,AB,I,D 11/12
+		Fantasma blueGhost = new Fantasma(20,5,7,8,9,10,FantasmasFirstMove.BLUE); 	//posx,posy,AR,AB,I,D 14/12
 		Fantasma yellowGhost = new Fantasma(14,16,15,16,17,18,FantasmasFirstMove.YELLOW); //posx,posy,AR,AB,I,D
 		
 		listf = new ArrayList<Fantasma>();
 		listf.add(redGhost);
 		listf.add(blueGhost);
 		listf.add(yellowGhost);
-		Coords.addcoo();
+		GrafoEnteros.addcoo();
 	}
 	
 	
@@ -91,9 +91,9 @@ public class Pacman {
 	private static void ponerGraficos() {
 		t.setActcolors(false); //ya no quiero colores
         t.setActimatges(true); 
-        t.setActborde(true);  //no quiero borde entre casillas
-        t.setActimgbackground(false);  //  TRUE PARA REVERTIR CAMBIOS
-        //t.setImgbackground("fondo.jpg");  //direccion al fondo. Todas las imagenes en la carpeta del proyecto
+        t.setActborde(false);  //no quiero borde entre casillas
+        t.setActimgbackground(true);  //  TRUE PARA REVERTIR CAMBIOS
+        t.setImgbackground("fondo.jpg");  //direccion al fondo. Todas las imagenes en la carpeta del proyecto
         String[] imatges = { 
         		
         "puntop1.png","","puntop.png",//0,1,2
@@ -120,6 +120,8 @@ public class Pacman {
 		"fantasmamuerto.png",//30
         "pacmanAR.png",//31
         "pacmanAB.png",//32
+        "ojosD.png",//33
+        "ojosI.png",//34
         
         };
         
@@ -229,7 +231,7 @@ public class Pacman {
             }			
         },
         0,
-       1000);      
+       900);      
         
 	}
 	

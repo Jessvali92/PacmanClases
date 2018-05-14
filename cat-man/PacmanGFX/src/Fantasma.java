@@ -1,15 +1,19 @@
 import java.awt.List;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 
-public class Fantasma {
+import org.omg.Messaging.SyncScopeHelper;
+
+public class Fantasma { 
 
 	private Integer posX;
 	private Integer posY;
 	private Boolean movDone = false;
 	private Boolean firstTime = false;
 	private Boolean die = false;
+	private Boolean eat = false;
 	public int tiempobolagorda = 0;
 	private int imgAR;
 	private int imgAB;
@@ -18,12 +22,34 @@ public class Fantasma {
 	public boolean returningHome = false;
 	public int positionHomeX = 11;
 	public int positionHomeY = 14;
+	private Array[][] destino;
+	private Array[][] pActual;
+	private Array[][] origen;
+	private int iteraciones;
 	public String op = "";
 	int vortex = 0;
 	ArrayList<Boolean> banderas = new ArrayList<Boolean>();
+	ArrayList<String> posNxtMove = new ArrayList<String>();
 	FantasmasFirstMove color;
 	
 	
+	
+	public int getPositionHomeX() {
+		return positionHomeX;
+	}
+
+	public void setPositionHomeX(int positionHomeX) {
+		this.positionHomeX = positionHomeX;
+	}
+
+	public int getPositionHomeY() {
+		return positionHomeY;
+	}
+
+	public void setPositionHomeY(int positionHomeY) {
+		this.positionHomeY = positionHomeY;
+	}
+
 	public void banderas() {
 		for (int i = 0; i < 30; i++) {
 			banderas.add(true);
@@ -42,8 +68,17 @@ public class Fantasma {
 		
 	}
 	
+	
 
-	public Integer getPosX() {
+	public Boolean getEat() {
+		return eat;
+	}
+
+	public void setEat(Boolean eat) {
+		this.eat = eat;
+	}
+
+	public  Integer getPosX() {
 		return posX;
 	}
 
@@ -51,7 +86,7 @@ public class Fantasma {
 		this.posX = posicionX;
 	}
 
-	public Integer getPosY() {
+	public  Integer getPosY() {
 		return posY;
 	}
 
@@ -102,8 +137,18 @@ public class Fantasma {
 	}
 
 	public void hazLoTuyo(Catman c) {
-			this.move(c);
 			this.know(c);
+			if (returningHome==false){
+				this.move(c);
+			}else {
+				this.returnHome();
+			}
+			this.know(c);
+	}
+	
+	
+	private void firstStep() { // primeros pasos de los fantasmas
+		
 	}
 	
 	/*if (this.color==FantasmasFirstMove.BLUE&&banderas.get(2)==true) {
@@ -254,50 +299,111 @@ public class Fantasma {
 		}
 		if (die) {
 			tiempobolagorda++;
-			if (tiempobolagorda > 30) {
+			if (this.getPosX() == c.getpacx() && this.getPosY() == c.getpacy()) {
+				eat = true;
+				returningHome=true;
+			}if (tiempobolagorda > 30) {
 				die = false;
+				eat = false;
 				tiempobolagorda = 0;
 			}
-
-			if (this.getPosX() == Catman.pacx && this.getPosY() == Catman.pacy) {
-
-				// Se comen al fantasma, ya lo haras.
-			}
-
 		} else {
-			if (this.getPosX() == Catman.pacx && this.getPosY() == Catman.pacy) {
-
+			returningHome=false;
+			if (this.getPosX() == c.getpacx() && this.getPosY() == c.getpacy()) {
 				Catman.finjuego = true;
 				Pacman.fin = true;
 			}
 		}
-	}
-	
-	
-	
-	/*private boolean noDijkstra(boolean b) {
+	}	
 
-		// camino siguiente
-
-		return Coords.calcCoods(this.getPosX(), this.getPosY());
-
-	}
-	
-	private String nextMove () {//TODO falta mirar que tiene que devolver
+	private void lastStep() { // desde la coordenada a casa
 		
-		int x = getPosX();
-		int y = getPosY();
-		int resultY=0;
+	}
+	
+	private void sVortex(int x, int y) { //funcion que mueve hasta el vortice
+		
+		String option = "";		
+		returningHome = true;
+		x = getPosX();
+		y = getPosY();		
+			
+		switch (option) {
+		case "DE":
+			if (positionHomeY < y && MapaFantasmas.mapaF[this.getPosX() + 1][this.getPosY()] != 1) { // right
+				this.operaPos("+", "y");
+				System.out.println("vuelve derecha");
+			}
+			break;
+	
+		case "IZ":
+			if (positionHomeY > y && MapaFantasmas.mapaF[this.getPosX() - 1][this.getPosY()] != 1) { // left
+				this.operaPos("-", "y");
+				System.out.println("vuelve izquierda");
+			}
+			break;
+	
+		case "AR":
+			if (positionHomeX > x && MapaFantasmas.mapaF[this.getPosX() - 1][this.getPosY()] != 1) { // up
+				this.operaPos("-", "x");
+				System.out.println("vuelve arriba");
+	
+			}
+			break;
+	
+		case "AB":
+			if (positionHomeX < x && MapaFantasmas.mapaF[this.getPosX() + 1][this.getPosY()] != 1) { // down
+				this.operaPos("+", "x");
+				System.out.println("vuelve abajo");
+			}
+			break;
+		}	
+	}
+		
+	
+	private void returnHome() {
+		
+		if (this.getPosX() == 11 && this.getPosY() == 14) {
+			//hacer movimiento final para entrar y 
+			//reproducir de nuevo la salida del fantasma
+		}/*else {
+			
+			//clase dijktra
+			
+			
+			
+			posNxtMove.removeAll(posNxtMove);
+			
+			// check vortice
+			if (Pacman.mapa[this.getPosX() - 1][this.getPosY()] == 0 || Pacman.mapa[this.getPosX() - 1][this.getPosY()] == 20) { 
+				posNxtMove.add("AR");
+				vortex++;
+			} if ( Pacman.mapa[this.getPosX() + 1][this.getPosY()] == 0 ||  Pacman.mapa[this.getPosX() + 1][this.getPosY()] == 20) {
+				posNxtMove.add("AB");
+				vortex++;
+			} if (Pacman.mapa[this.getPosX()][this.getPosY() - 1] == 0 || Pacman.mapa[this.getPosX()][this.getPosY() - 1] == 20) {
+				posNxtMove.add("IZ");
+				vortex++;
+			} if (Pacman.mapa[this.getPosX()][this.getPosY() + 1] == 0 || Pacman.mapa[this.getPosX()][this.getPosY() + 1] == 20) {
+				posNxtMove.add("DE");
+				vortex++;
+			}
+			System.out.println(vortex);
+			if (vortex>=3) {//significa que estas en un vortice
+				sVortex(this.getPosX(),this.getPosY());
+				System.out.println("entra vortice porque cumple");
+			}else {//significa que NO estas en un vortice
+				sNextVortex(this.getPosX(),this.getPosY());
+			}
+					
+			
+		}*/
+	}
+	
+	
+	private void sNextVortex(Integer x, Integer y) {
+		
+		/*int resultY=0;
 		int resultX=0;
-		String solucion="";
-		int XAR = MapaFantasmas.mapa[x - 1][y];
-		int XAB = MapaFantasmas.mapa[x + 1][y];
-		int YIZ = MapaFantasmas.mapa[x][y - 1];
-		int YDE = MapaFantasmas.mapa[x][y + 1];
-		String prueba1="";
-		String prueba2="";
-		String prueba3="";
-		String prueba4="";
 		//comprobar cual esta mas lejos
 		
 		if (positionHomeY>y) {
@@ -311,152 +417,19 @@ public class Fantasma {
 			resultX = x-positionHomeX;
 		}
 		
-		//saber si me puedo hacia ese lugar o no
+		//saber si me puedo ir hacia ese lugar o no
 		
 		if (resultY>resultX) {
-			solucion = "izq/derecha";
+			System.out.println("izq/derecha");
 		}else {
 			System.out.println("arriba/abajo");
-		}
-		
-		if (YIZ == 0 || YIZ == 20) {
-			vortex++;
-			prueba1 = "IZ";
-			return "IZ";
-		}if (YDE == 0 || YDE == 20) {
-			prueba2 = "IZ";
-			vortex++;
-			return "DE";
-		}if (XAR == 0 || XAR == 20) { 
-			prueba3 = "IZ";
-			vortex++;
-			return "AR";
-		}if (XAB == 0 || XAB == 20) {
-			prueba4 = "IZ";
-			vortex++;
-			return "AB";				
-		}	
-		System.out.println("el lugar hacia donde tengo que ir: "+solucion+"\n"+"el lugar hacia donde me puedo mover es"+prueba1+" "+prueba2+" "+prueba3+" "+prueba4);
-		return prueba4;
-	}
-	
-	
-
-	/*private void lastStep() { // desde la coordenada a casa
-		
-	}
-	
-	private void firstStep() { // primeros pasos de los fantasmas
-		
+		}		*/
 	}
 
-	
-	private void sVortex(int x, int y) { //funcion que mueve hasta el vortice
-		
-		String option = "";		
-		returningHome = true;
-		x = getPosX();
-		y = getPosY();
-		
-		if (noDijkstra(false)) { // si no encuentra el vortice
-			
-			
-			
-			System.out.println("Esquinas encontradas: " + vortex);
-			
-			switch (option) {
-			case "DE":
-				if (positionHomeY < y && MapaFantasmas.mapa[this.getPosX() + 1][this.getPosY()] != 1) { // right
-					this.operaPos("+", "y");
-					System.out.println("vuelve derecha");
-				}
-				break;
-		
-			case "IZ":
-				if (positionHomeY > y && MapaFantasmas.mapa[this.getPosX() - 1][this.getPosY()] != 1) { // left
-					this.operaPos("-", "y");
-					System.out.println("vuelve izquierda");
-				}
-				break;
-		
-			case "AR":
-				if (positionHomeX > x && MapaFantasmas.mapa[this.getPosX() - 1][this.getPosY()] != 1) { // up
-					this.operaPos("-", "x");
-					System.out.println("vuelve arriba");
-		
-				}
-				break;
-		
-			case "AB":
-				if (positionHomeX < x && MapaFantasmas.mapa[this.getPosX() + 1][this.getPosY()] != 1) { // down
-					this.operaPos("+", "x");
-					System.out.println("vuelve abajo");
-				}
-				break;
-			}
-		}else {
-			//Ha encontrado el vortice
-			
-			
-		}
-	}
-		
-	
-	private void returnHome() { //funcion hacia la nueva direccion
-		
-		//TODO convertir a global
-		int x = getPosX();
-		int y = getPosY();
-		int positionHomeX = 11;
-		int positionHomeY = 14;
-		String option = "";
-		int vortex = 0;
-		
-		
-		// get next position
-		
-		int XAR = MapaFantasmas.mapa[x - 1][y];
-		int XAB = MapaFantasmas.mapa[x + 1][y];
-		int YIZ = MapaFantasmas.mapa[x][y - 1];
-		int YDE = MapaFantasmas.mapa[x][y + 1];
-		
-		// check next position
-
-		if (XAR == 0 || XAR == 20) { 
-			option = "AR";
-			vortex++;
-		} else if (XAB == 0 || XAB == 20) {
-			option = "AB";
-			vortex++;
-		} else if (YIZ == 0 || YIZ == 20) {
-			option = "IZ";
-			vortex++;
-		} else if (YDE == 0 || YDE == 20) {
-			option = "DE";
-			vortex++;
-		}
-	
-	
-		
-		returningHome = true;
-		
-
-		// saber si hay que ir hacia la derecha/izquierda o arriba/abajo
-		/*
-		 * una funcion que avanza hacia la esquina
-		 * una funcion que detecta en que direccion ir
-		 * 
-		 * casillas de alrededor si es 3 o mas es un cruce mathabs untilvortex();
-		 * nodijkstra(); clase de coordenadas buscar primero un vertice de forma random
-		 * conseguir hacer el camino mas corto posible
-		 
-
-	}*/
-	
 	private void move(Catman c) {
 		movDone = false;
 		if (returningHome) {
-			//returnHome();
+			returnHome();
 		} else {
 			while (!movDone) {
 				int movF = (int) (Math.random() * (4) + 1);
@@ -469,17 +442,18 @@ public class Fantasma {
 						this.operaPos("+", "x");
 						//lastNumber = Pacman.mapa[this.getPosX()][this.getPosY()];
 						// DEATH
-						if (this.getDie() == true) {
-							MapaFantasmas.mapaF[this.getPosX()][this.getPosY()] = 28;
+						if (this.getPosX() == c.getpacx() && this.getPosY() == c.getpacy()) {
+							this.setEat(true);
+						}if (this.getDie()==true&&this.getEat()==false) {
+							MapaFantasmas.mapaF[this.getPosX()][this.getPosY()] = 28;//panic
 							this.setMovDone(true);
-							if (this.getPosX() == c.getpacx() && this.getPosY() == c.getpacy()) {
-								MapaFantasmas.mapaF[this.getPosX()][this.getPosY()] = 14;// el 14 es el rosa Cambiar																			
-								//nextMove();
-								//returnHome();
-							}
+						}else if (this.getDie() == true&&this.getEat()==true) {
+							MapaFantasmas.mapaF[this.getPosX()][this.getPosY()] = 33; //ojos
+							this.setMovDone(true);															
 
 							// ALIVE
 						} else if (this.getDie() == false) {
+							
 							MapaFantasmas.mapaF[this.getPosX()][this.getPosY()] = imgAB;
 							this.setMovDone(true);
 						} else {
@@ -496,16 +470,16 @@ public class Fantasma {
 						this.operaPos("-", "x");
 						//lastNumber = Pacman.mapa[this.getPosX()][this.getPosY()];
 						// DEATH
-						if (this.getDie() == true) {
-							MapaFantasmas.mapaF[this.getPosX()][this.getPosY()] = 28;
+						if (this.getPosX() == c.getpacx() && this.getPosY() == c.getpacy()) {
+							this.setEat(true);
+						}if (this.getDie()==true&&this.getEat()==false) {
+							MapaFantasmas.mapaF[this.getPosX()][this.getPosY()] = 28;//panic
 							this.setMovDone(true);
-							if (this.getPosX() == c.getpacx() && this.getPosY() == c.getpacy()) {
-								MapaFantasmas.mapaF[this.getPosX()][this.getPosY()] = 14;// el 14 es el rosa Cambiar 																			
-								//sVortex();
-								//returnHome();
-							}
-							// ALIVE
-
+						}else if (this.getDie() == true&&this.getEat()==true) {
+							MapaFantasmas.mapaF[this.getPosX()][this.getPosY()] = 33;//ojos
+							this.setMovDone(true);																
+						
+						// ALIVE
 						} else if (this.getDie() == false) {
 							MapaFantasmas.mapaF[this.getPosX()][this.getPosY()] = imgAR;
 							this.setMovDone(true);
@@ -525,14 +499,15 @@ public class Fantasma {
 						this.operaPos("-", "y");
 						//lastNumber = Pacman.mapa[this.getPosX()][this.getPosY()];
 						// DEATH
-						if (this.getDie() == true) {
-							MapaFantasmas.mapaF[this.getPosX()][this.getPosY()] = 28;
+						// DEATH
+						if (this.getPosX() == c.getpacx() && this.getPosY() == c.getpacy()) {
+							this.setEat(true);
+						}if (this.getDie()==true&&this.getEat()==false) {
+							MapaFantasmas.mapaF[this.getPosX()][this.getPosY()] = 28;//panic
 							this.setMovDone(true);
-							if (this.getPosX() == c.getpacx() && this.getPosY() == c.getpacy()) {
-								MapaFantasmas.mapaF[this.getPosX()][this.getPosY()] = 14;// el 14 es el rosa Cambiar																				
-								//sVortex();
-								//returnHome();
-							}
+						}else if (this.getDie() == true&&this.getEat()==true) {
+							MapaFantasmas.mapaF[this.getPosX()][this.getPosY()] = 33;//ojos
+							this.setMovDone(true);															
 							// ALIVE
 						} else if (this.getDie() == false) {
 
@@ -554,14 +529,14 @@ public class Fantasma {
 						this.operaPos("+", "y");
 						//lastNumber = Pacman.mapa[this.getPosX()][this.getPosY()];
 						// DEATH
-						if (this.getDie() == true) {
-							MapaFantasmas.mapaF[this.getPosX()][this.getPosY()] = 28;
+						if (this.getPosX() == c.getpacx() && this.getPosY() == c.getpacy()) {
+							this.setEat(true);
+						}if (this.getDie()==true&&this.getEat()==false) {
+							MapaFantasmas.mapaF[this.getPosX()][this.getPosY()] = 28;//panic
 							this.setMovDone(true);
-							if (this.getPosX() == c.getpacx() && this.getPosY() == c.getpacy()) {
-								MapaFantasmas.mapaF[this.getPosX()][this.getPosY()] = 14;// el 14 es el rosa Cambiar																				
-								//sVortex();
-								//returnHome();
-							}
+						}else if (this.getDie() == true&&this.getEat()==true) {
+							MapaFantasmas.mapaF[this.getPosX()][this.getPosY()] = 33;//ojos
+							this.setMovDone(true);															
 							// ALIVE
 						} else if (this.getDie() == false) {
 							MapaFantasmas.mapaF[this.getPosX()][this.getPosY()] = imgD;
@@ -575,4 +550,38 @@ public class Fantasma {
 			}
 		}
 	}
+	
+	public void listaArraysV() {
+		
+
+
+	}
+		
+		
+	public void dijkstra() {
+		destino = new Array [positionHomeX][positionHomeY];
+		pActual = new Array [this.posX][this.posY];
+		origen = new Array [this.posX][this.posY];
+		iteraciones=0;
+		int contadorPeso1;
+		
+		
+		
+		
+		
+		System.out.println(Arrays.toString(destino));
+		System.out.println(Arrays.toString(pActual));
+		System.out.println(Arrays.toString(origen));
+		while (!pActual.equals(destino)) {
+			//comprobar hacia donde voy
+			if (MapaFantasmas.mapaF[this.posX+1][this.posY]!=1||MapaFantasmas.mapaF[this.posX+1][this.posY]!=-1) {// abajo
+				//while (MapaFantasmas.mapaF[this.posX][this.posY]!= listaArrays.contains[i][j]) {
+					
+				}
+			}
+	}
+	
+			
+		
+	
 }

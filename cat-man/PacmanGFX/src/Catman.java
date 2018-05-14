@@ -118,6 +118,7 @@ public class Catman {
 			comebola=true;
 			for(Fantasma f : Pacman.listf) {
 				f.setDie(true);
+				
 			}
 			desactivar3x1y = false;
 			
