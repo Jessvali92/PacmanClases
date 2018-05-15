@@ -578,7 +578,7 @@ public class Fantasma {
 			pAnterior = new Array [this.posX][this.posY];
 			//comprobar hacia donde voy
 			if (MapaFantasmas.mapaF[this.posX+1][this.posY]!=1||MapaFantasmas.mapaF[this.posX+1][this.posY]!=-1) {// abajo
-				while (!booleanCoords) {
+				while (!booleanCoords) {//mientras no hayas encontrado coordenadas de vertice
 					for (int i=0; i<listaArrays.size();i++) {
 						listaArrayPosActual.add(new Integer[]{this.posX,this.posY});
 						if (listaArrays.get(i)==listaArrayPosActual.get(0)) {//si coincide estas en un vertice
