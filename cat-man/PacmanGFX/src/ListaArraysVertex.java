@@ -2,15 +2,16 @@ import java.util.ArrayList;
 
 public class ListaArraysVertex {//posiciones de los vertices
 
-	public static void main(String[] args) {
+	public ListaArraysVertex() {
 		
-		ArrayList<Integer[]> listaArrays = new ArrayList<Integer[]>();
-		
+	}
+	
+	
+	public ArrayList<Integer[]> getConexiones() {
 		ArrayList<Integer[]> listaArraysCone = new ArrayList<Integer[]>();
 		
-		
-		
 		//vectores conexiones
+		
 		
 		listaArraysCone.add(new Integer[]{1,6});//index: 0 
 		listaArraysCone.add(new Integer[]{0,2,7});//1
@@ -90,8 +91,16 @@ public class ListaArraysVertex {//posiciones de los vertices
 		listaArraysCone.add(new Integer[]{55,61,63});//62
 		listaArraysCone.add(new Integer[]{59,62});//63
 		
+		return listaArraysCone;
+		
+	}
+	
+	public ArrayList<Integer[]> getCoordenadas() {
+		
+		ArrayList<Integer[]> listaArrays = new ArrayList<Integer[]>();
 		
         //vectores posiciones
+		
         listaArrays.add(new Integer[]{1,1});//index: 0
         listaArrays.add(new Integer[]{1,6});
         listaArrays.add(new Integer[]{1,12});
@@ -168,9 +177,11 @@ public class ListaArraysVertex {//posiciones de los vertices
         listaArrays.add(new Integer[]{29,12});
         listaArrays.add(new Integer[]{29,15});
         listaArrays.add(new Integer[]{29,26});//index: 63
+		
+        return listaArrays;
  
         
-
 	}
+	
 
 }

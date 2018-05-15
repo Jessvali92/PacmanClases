@@ -22,15 +22,19 @@ public class Fantasma {
 	public boolean returningHome = false;
 	public int positionHomeX = 11;
 	public int positionHomeY = 14;
-	private Array[][] destino;
-	private Array[][] pActual;
+	private int[][] destino;
+	private Array[][] pAnterior;
 	private Array[][] origen;
 	private int iteraciones;
 	public String op = "";
 	int vortex = 0;
 	ArrayList<Boolean> banderas = new ArrayList<Boolean>();
 	ArrayList<String> posNxtMove = new ArrayList<String>();
+	ArrayList<Integer[]> listaArraysCone;
+	ArrayList<Integer[]> listaArrays;
+	ArrayList<Integer[]> listaArrayPosActual;
 	FantasmasFirstMove color;
+	private Boolean booleanCoords=false;
 	
 	
 	
@@ -302,7 +306,7 @@ public class Fantasma {
 			if (this.getPosX() == c.getpacx() && this.getPosY() == c.getpacy()) {
 				eat = true;
 				returningHome=true;
-			}if (tiempobolagorda > 30) {
+			}if (tiempobolagorda > 55) {
 				die = false;
 				eat = false;
 				tiempobolagorda = 0;
@@ -559,29 +563,283 @@ public class Fantasma {
 		
 		
 	public void dijkstra() {
-		destino = new Array [positionHomeX][positionHomeY];
-		pActual = new Array [this.posX][this.posY];
+		
+		
 		origen = new Array [this.posX][this.posY];
 		iteraciones=0;
-		int contadorPeso1;
-		
-		
-		
-		
-		
+		int contadorPesoAbajo = 0;
 		System.out.println(Arrays.toString(destino));
-		System.out.println(Arrays.toString(pActual));
+		System.out.println(Arrays.toString(pAnterior));
 		System.out.println(Arrays.toString(origen));
-		while (!pActual.equals(destino)) {
+		
+		while (MapaFantasmas.mapaF[this.posX][this.posY]!=destino[positionHomeX][positionHomeY]) {
+			
+			
+			pAnterior = new Array [this.posX][this.posY];
 			//comprobar hacia donde voy
 			if (MapaFantasmas.mapaF[this.posX+1][this.posY]!=1||MapaFantasmas.mapaF[this.posX+1][this.posY]!=-1) {// abajo
-				//while (MapaFantasmas.mapaF[this.posX][this.posY]!= listaArrays.contains[i][j]) {
+				while (!booleanCoords) {
+					for (int i=0; i<listaArrays.size();i++) {
+						listaArrayPosActual.add(new Integer[]{this.posX,this.posY});
+						if (listaArrays.get(i)==listaArrayPosActual.get(0)) {//si coincide estas en un vertice
+							System.out.println("vector encontrado(indice: "+listaArrays.get(i)+" )");
+							System.out.println("etiqueta"+contadorPesoAbajo+","+listaArrayPosActual.get(0));//falta guardar iteraciones
+							traductor(this.posX,this.posY);
+							
+							booleanCoords=true;
+							
+							
+						}else{//no has llegado a un vertice entonces sigues
+							contadorPesoAbajo++;
+							MapaFantasmas.mapaF[this.posX][this.posY]=-1;//tachar posicion pasada
+							this.operaPos("+", "x");
+							booleanCoords=false;							
+						}
+					}
 					
 				}
+				//despues de comprobar las coordenadas
 			}
+		}
 	}
 	
-			
+	private int traductor(int x, int y) {
 		
+		int numeroVortice;
+		
+		int mapa[][] = {
+
+				{1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1},
+				{1,	0,	0,	0,	0,	0,	1,	0,	0,	0,	0,	0,	2,	1,	1,	3,	0,	0,	0,	0,	0,	4,	0,	0,	0,	0,	5,	1},
+				{1,	0,	1,	1,	1,	1,	0,	1,	1,	1,	1,	1,	0,	1,	1,	0,	1,	1,	1,	1,	1,	0,	1,	1,	1,	1,	0,	1},
+				{1,	2,	1,	1,	1,	1,	0,	1,	1,	1,	1,	1,	0,	1,	1,	0,	1,	1,	1,	1,	1,	0,	1,	1,	1,	1,	2,	1},
+				{1,	0,	1,	1,	1,	1,	0,	1,	1,	1,	1,	1,	0,	1,	1,	0,	1,	1,	1,	1,	1,	0,	1,	1,	1,	1,	0,	1},
+				{1,	6,	0,	0,	0,	0,	7,	0,	0,	8,	0,	0,	9,	0,	0,	10,	0,	0,	11,	0,	0,	12,	0,	0,	0,	0,	13,	1},
+				{1,	0,	1,	1,	1,	1,	0,	1,	1,	0,	1,	1,	1,	1,	1,	1,	1,	1,	0,	1,	1,	0,	1,	1,	1,	1,	0,	1},
+				{1,	0,	1,	1,	1,	1,	0,	1,	1,	0,	1,	1,	1,	1,	1,	1,	1,	1,	0,	1,	1,	0,	1,	1,	1,	1,	0,	1},
+				{1,	14,	0,	0,	0,	0,	15,	1,	1,	16,	0,	0,	17,	1,	1,	18,	0,	0,	19,	1,	1,	20,	0,	0,	0,	0,	21,	1},
+				{1,	1,	1,	1,	1,	1,	0,	1,	1,	1,	1,	1,	0,	1,	1,	0,	1,	1,	1,	1,	1,	0,	1,	1,	1,	1,	1,	1},
+				{1,	1,	1,	1,	1,	1,	0,	1,	1,	1,	1,	1,	0,	1,	1,	0,	1,	1,	1,	1,	1,	0,	1,	1,	1,	1,	1,	1},
+				{1,	1,	1,	1,	1,	1,	0,	1,	1,	22,	0,	0,	23,	3,	3,	24,	0,	0,	25,	1,	1,	0,	1,	1,	1,	1,	1,	1},
+				{1,	1,	1,	1,	1,	1,	0,	1,	1,	0,	1,	1,	1,	3,	3,	1,	1,	1,	0,	1,	1,	0,	1,	1,	1,	1,	1,	1},
+				{1,	1,	1,	1,	1,	1,	0,	1,	1,	0,	1,	20,	20,	20,	20,	20,	20,	1,	0,	1,	1,	0,	1,	1,	1,	1,	1,	1},
+				{1,	0,	0,	0,	0,	0,	26,	0,	0,	27,	1,	20,	20,	20,	20,	20,	20,	1,	28,	0,	0,	29,	0,	0,	0,	0,	0,	1},
+				{1,	1,	1,	1,	1,	1,	0,	1,	1,	0,	1,	20,	20,	20,	20,	20,	20,	1,	0,	1,	1,	0,	1,	1,	1,	1,	1,	1},
+				{1,	1,	1,	1,	1,	1,	0,	1,	1,	0,	1,	1,	1,	1,	1,	1,	1,	1,	0,	1,	1,	0,	1,	1,	1,	1,	1,	1},
+				{1,	1,	1,	1,	1,	1,	0,	1,	1,	30,	0,	0,	0,	0,	0,	0,	0,	0,	31,	1,	1,	0,	1,	1,	1,	1,	1,	1},
+				{1,	1,	1,	1,	1,	1,	0,	1,	1,	0,	1,	1,	1,	1,	1,	1,	1,	1,	0,	1,	1,	0,	1,	1,	1,	1,	1,	1},
+				{1,	1,	1,	1,	1,	1,	0,	1,	1,	0,	1,	1,	1,	1,	1,	1,	1,	1,	0,	1,	1,	0,	1,	1,	1,	1,	1,	1},
+				{1,	32,	0,	0,	0,	0,	33,	0,	0,	34,	0,	0,	35,	1,	1,	36,	0,	0,	37,	0,	0,	38,	0,	0,	0,	0,	39,	1},
+				{1,	0,	1,	1,	1,	1,	0,	1,	1,	1,	1,	1,	0,	1,	1,	0,	1,	1,	1,	1,	1,	0,	1,	1,	1,	1,	0,	1},
+				{1,	2,	1,	1,	1,	1,	0,	1,	1,	1,	1,	1,	0,	1,	1,	0,	1,	1,	1,	1,	1,	0,	1,	1,	1,	1,	2,	1},
+				{1,	40,	0,	41,	1,	1,	42,	0,	0,	43,	0,	0,	44,	0,	0,	45,	0,	0,	46,	0,	0,	47,	1,	1,	48,	0,	49,	1},
+				{1,	1,	1,	0,	1,	1,	0,	1,	1,	0,	1,	1,	1,	1,	1,	1,	1,	1,	0,	1,	1,	0,	1,	1,	0,	1,	1,	1},
+				{1,	1,	1,	0,	1,	1,	0,	1,	1,	0,	1,	1,	1,	1,	1,	1,	1,	1,	0,	1,	1,	0,	1,	1,	0,	1,	1,	1},
+				{1,	50,	0,	51,	0,	0,	52,	1,	1,	53,	0,	0,	54,	1,	1,	55,	0,	0,	56,	1,	1,	57,	0,	0,	58,	0,	59,	1},
+				{1,	0,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	0,	1,	1,	0,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	0,	1},
+				{1,	0,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	0,	1,	1,	0,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	0,	1},
+				{1,	60,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	61,	0,	0,	62,	0,	0,	0,	0,	0,	0,	0,	0,	0,	0,	63,	1},
+				{1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1},
+
+		};
+		
+		numeroVortice = mapa[x][y];
+		
+		return numeroVortice;
+		
+		
+		
+	}
+
+	
+	
+	
+	public void pruebaComparar2() {
+		
+		
+		
+	}
+	
+	
+	
+	
+	public boolean initListas () {
+		listaArraysCone = new ArrayList<Integer[]>();
+		listaArrays = new ArrayList<Integer[]>();
+		listaArrayPosActual = new ArrayList<Integer[]>();
+	
+		
+		
+		
+		//vectores conexiones
+		
+		
+		listaArraysCone.add(new Integer[]{1,6});//index: 0 
+		listaArraysCone.add(new Integer[]{0,2,7});//1
+		listaArraysCone.add(new Integer[]{1,9});//2
+		listaArraysCone.add(new Integer[]{4,10});//3
+		listaArraysCone.add(new Integer[]{3,5,12});//4
+		listaArraysCone.add(new Integer[]{4,13});//5
+      
+		listaArraysCone.add(new Integer[]{0,7,14});//6
+		listaArraysCone.add(new Integer[]{1,6,8,15});//7
+		listaArraysCone.add(new Integer[]{7,9,16});//8
+		listaArraysCone.add(new Integer[]{2,8,10});//9
+		listaArraysCone.add(new Integer[]{3,9,11});//10
+		listaArraysCone.add(new Integer[]{10,12,19});//11
+		listaArraysCone.add(new Integer[]{4,11,13,20});//12
+		listaArraysCone.add(new Integer[]{5,12,21});//13
+        
+		listaArraysCone.add(new Integer[]{6,15});//14
+		listaArraysCone.add(new Integer[]{7,14,26});//15
+		listaArraysCone.add(new Integer[]{8,17});//16
+		listaArraysCone.add(new Integer[]{16,23});//17
+		listaArraysCone.add(new Integer[]{19,24});//18
+		listaArraysCone.add(new Integer[]{11,18});//19
+		listaArraysCone.add(new Integer[]{12,21,29});//20
+		listaArraysCone.add(new Integer[]{13,20});//21
+
+		listaArraysCone.add(new Integer[]{23,27});//22
+		listaArraysCone.add(new Integer[]{17,22,24});//23
+		listaArraysCone.add(new Integer[]{18,23,25});//24
+		listaArraysCone.add(new Integer[]{24,28});//25
+        
+      
+		listaArraysCone.add(new Integer[]{15,27,33});//26
+		listaArraysCone.add(new Integer[]{22,26,30});//27
+		listaArraysCone.add(new Integer[]{25,29,31});//28
+		listaArraysCone.add(new Integer[]{20,38});//29
+        
+		listaArraysCone.add(new Integer[]{27,31,34});//30
+		listaArraysCone.add(new Integer[]{28,30,37});//31
+        
+		listaArraysCone.add(new Integer[]{33,40});//32
+		listaArraysCone.add(new Integer[]{26,32,34,42});//33
+		listaArraysCone.add(new Integer[]{30,33,35});//34
+		listaArraysCone.add(new Integer[]{34,44});//35
+		listaArraysCone.add(new Integer[]{37,45});//36
+		listaArraysCone.add(new Integer[]{31,36,38});//37
+		listaArraysCone.add(new Integer[]{29,37,39,47});//38
+		listaArraysCone.add(new Integer[]{38,49});//39
+        
+        
+		listaArraysCone.add(new Integer[]{32,41});//40
+		listaArraysCone.add(new Integer[]{40,51});//41
+		listaArraysCone.add(new Integer[]{33,43,52});//42
+		listaArraysCone.add(new Integer[]{42,44});//43
+		listaArraysCone.add(new Integer[]{35,43,45});//44
+		listaArraysCone.add(new Integer[]{36,44,46});//45
+		listaArraysCone.add(new Integer[]{45,47,56});//46
+		listaArraysCone.add(new Integer[]{38,46,57});//47
+		listaArraysCone.add(new Integer[]{49,58});//48
+		listaArraysCone.add(new Integer[]{39,48});//49
+        
+        
+		listaArraysCone.add(new Integer[]{51,60});//50
+		listaArraysCone.add(new Integer[]{41,50,52});//51
+		listaArraysCone.add(new Integer[]{42,51});//52
+		listaArraysCone.add(new Integer[]{43,54});//53
+		
+		listaArraysCone.add(new Integer[]{53,61});//54
+		listaArraysCone.add(new Integer[]{56,62});//55
+		listaArraysCone.add(new Integer[]{46,55});//56
+		listaArraysCone.add(new Integer[]{47,58});//57
+		listaArraysCone.add(new Integer[]{48,57,59});//58
+		listaArraysCone.add(new Integer[]{58,63});//59
+		
+		listaArraysCone.add(new Integer[]{50,61});//60
+		listaArraysCone.add(new Integer[]{54,60,62});//61
+		listaArraysCone.add(new Integer[]{55,61,63});//62
+		listaArraysCone.add(new Integer[]{59,62});//63
+		
+		
+		
+		
+		
+        //vectores posiciones
+		
+        listaArrays.add(new Integer[]{1,1});//index: 0
+        listaArrays.add(new Integer[]{1,6});
+        listaArrays.add(new Integer[]{1,12});
+        listaArrays.add(new Integer[]{1,15});
+        listaArrays.add(new Integer[]{1,21});
+        listaArrays.add(new Integer[]{1,26});
+      
+        listaArrays.add(new Integer[]{5,1});
+        listaArrays.add(new Integer[]{5,6});
+        listaArrays.add(new Integer[]{5,9});
+        listaArrays.add(new Integer[]{5,12});
+        listaArrays.add(new Integer[]{5,15});
+        listaArrays.add(new Integer[]{5,18});
+        listaArrays.add(new Integer[]{5,21});
+        listaArrays.add(new Integer[]{5,26});
+        
+        listaArrays.add(new Integer[]{8,1});
+        listaArrays.add(new Integer[]{8,6});
+        listaArrays.add(new Integer[]{8,9});
+        listaArrays.add(new Integer[]{8,12});
+        listaArrays.add(new Integer[]{8,15});
+        listaArrays.add(new Integer[]{8,18});
+        listaArrays.add(new Integer[]{8,21});
+        listaArrays.add(new Integer[]{8,26});
+
+        listaArrays.add(new Integer[]{11,9});
+        listaArrays.add(new Integer[]{11,12});
+        listaArrays.add(new Integer[]{11,15});
+        listaArrays.add(new Integer[]{11,18});
+        
+      
+        listaArrays.add(new Integer[]{14,6});
+        listaArrays.add(new Integer[]{14,9});
+        listaArrays.add(new Integer[]{14,18});
+        listaArrays.add(new Integer[]{14,21});
+        
+        listaArrays.add(new Integer[]{17,9});
+        listaArrays.add(new Integer[]{17,18});
+        
+        listaArrays.add(new Integer[]{20,1});
+        listaArrays.add(new Integer[]{20,6});
+        listaArrays.add(new Integer[]{20,9});
+        listaArrays.add(new Integer[]{20,12});
+        listaArrays.add(new Integer[]{20,15});
+        listaArrays.add(new Integer[]{20,18});
+        listaArrays.add(new Integer[]{20,21});
+        listaArrays.add(new Integer[]{20,26});
+        
+        
+        listaArrays.add(new Integer[]{23,1});
+        listaArrays.add(new Integer[]{23,3});
+        listaArrays.add(new Integer[]{23,6});
+        listaArrays.add(new Integer[]{23,9});
+        listaArrays.add(new Integer[]{23,12});
+        listaArrays.add(new Integer[]{23,15});
+        listaArrays.add(new Integer[]{23,18});
+        listaArrays.add(new Integer[]{23,21});
+        listaArrays.add(new Integer[]{23,24});
+        listaArrays.add(new Integer[]{23,26});
+        
+        listaArrays.add(new Integer[]{26,1});
+        listaArrays.add(new Integer[]{26,3});
+        listaArrays.add(new Integer[]{26,6});
+        listaArrays.add(new Integer[]{26,9});
+        listaArrays.add(new Integer[]{26,12});
+        listaArrays.add(new Integer[]{26,15});
+        listaArrays.add(new Integer[]{26,18});
+        listaArrays.add(new Integer[]{26,21});
+        listaArrays.add(new Integer[]{26,24});
+        listaArrays.add(new Integer[]{26,26});
+        
+        
+        listaArrays.add(new Integer[]{29,1});
+        listaArrays.add(new Integer[]{29,12});
+        listaArrays.add(new Integer[]{29,15});
+        listaArrays.add(new Integer[]{29,26});//index: 63
+		
+        return true;
+ 
+        
+	}
+	
+	
 	
 }
