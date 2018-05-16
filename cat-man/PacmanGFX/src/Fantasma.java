@@ -34,7 +34,8 @@ public class Fantasma {
 	ArrayList<Integer[]> listaArrays;
 	ArrayList<Integer[]> listaArrayPosActual;
 	FantasmasFirstMove color;
-	private Boolean booleanCoords=false;
+	private Boolean verticeEncontrado=false;
+	Integer[] posicionActual;
 	
 	
 	
@@ -141,13 +142,15 @@ public class Fantasma {
 	}
 
 	public void hazLoTuyo(Catman c) {
-			this.know(c);
+		this.noDijkstra();	
+			/*this.know(c);
 			if (returningHome==false){
-				this.move(c);
+				
+				//this.move(c);				
 			}else {
 				this.returnHome();
 			}
-			this.know(c);
+			this.know(c);*/
 	}
 	
 	
@@ -560,45 +563,124 @@ public class Fantasma {
 
 
 	}
+	
+	public void caminoVectores(int vectorEncontrado, int destino) {
+		int numFinal= destino;
+		int numActual=vectorEncontrado;
+		if (numActual==numFinal) {
+			System.out.println("si");
+			
+		}else {
+			
+			
+			System.out.println("no");
+		}
 		
 		
-	public void dijkstra() {
 		
-		
+	}
+	
+	public void noDijkstra() {
+		System.out.println("entra dj");
+		initListas();
 		origen = new Array [this.posX][this.posY];
 		iteraciones=0;
-		int contadorPesoAbajo = 0;
-		System.out.println(Arrays.toString(destino));
-		System.out.println(Arrays.toString(pAnterior));
-		System.out.println(Arrays.toString(origen));
-		
-		while (MapaFantasmas.mapaF[this.posX][this.posY]!=destino[positionHomeX][positionHomeY]) {
-			
-			
+		/*listaArraysCone.get(0)[0]= 0; --> modificar el array 0 del indice 0*/
+		while (MapaFantasmas.mapaF[this.posX][this.posY]!=MapaFantasmas.mapaF[positionHomeX][positionHomeY]) {
+			System.out.println("entro while");
 			pAnterior = new Array [this.posX][this.posY];
 			//comprobar hacia donde voy
 			if (MapaFantasmas.mapaF[this.posX+1][this.posY]!=1||MapaFantasmas.mapaF[this.posX+1][this.posY]!=-1) {// abajo
-				while (!booleanCoords) {//mientras no hayas encontrado coordenadas de vertice
-					for (int i=0; i<listaArrays.size();i++) {
-						listaArrayPosActual.add(new Integer[]{this.posX,this.posY});
-						if (listaArrays.get(i)==listaArrayPosActual.get(0)) {//si coincide estas en un vertice
-							System.out.println("vector encontrado(indice: "+listaArrays.get(i)+" )");
-							System.out.println("etiqueta"+contadorPesoAbajo+","+listaArrayPosActual.get(0));//falta guardar iteraciones
-							traductor(this.posX,this.posY);
-							
-							booleanCoords=true;
-							
-							
-						}else{//no has llegado a un vertice entonces sigues
-							contadorPesoAbajo++;
-							MapaFantasmas.mapaF[this.posX][this.posY]=-1;//tachar posicion pasada
-							this.operaPos("+", "x");
-							booleanCoords=false;							
-						}
+				while (!verticeEncontrado) {//mientras no hayas encontrado coordenadas de vertice
+					posicionActual = new Integer[]{this.posX,this.posY};
+					System.out.println("posAc"+posicionActual[0]);
+					for (int i=0; i<listaArrays.size();i++) {						
+						if (listaArrays.get(i)[0]==posicionActual[0]&&listaArrays.get(i)[1]==posicionActual[1]) {//si coincide llegas a un vertice	
+							//System.out.println("vector encontrado(indice: "+i+" )");//numero del vertice encontrado		
+							System.out.println(listaArraysCone.get(traductor(this.posX,this.posY)));//vertice encontrado y posicion
+							verticeEncontrado=true;
+							i=listaArrays.size();//cambiar a while algun dia	
+						}				
 					}
-					
+					if (verticeEncontrado==false) {//no entra si ha encontrado el vertice
+						System.out.println("entra else");
+						//MapaFantasmas.mapaF[this.posX][this.posY]=-1;//tachar posicion pasada
+						this.operaPos("+", "x");
+						verticeEncontrado=false;
+					}
 				}
 				//despues de comprobar las coordenadas
+			}else {
+				System.out.println("abajo no se puede");
+			}			
+			if (MapaFantasmas.mapaF[this.posX-1][this.posY]!=1||MapaFantasmas.mapaF[this.posX-1][this.posY]!=-1) {// arriba
+				while (!verticeEncontrado) {//mientras no hayas encontrado coordenadas de vertice
+					posicionActual = new Integer[]{this.posX,this.posY};
+					System.out.println("posAc"+posicionActual[0]);
+					for (int i=0; i<listaArrays.size();i++) {						
+						if (listaArrays.get(i)[0]==posicionActual[0]&&listaArrays.get(i)[1]==posicionActual[1]) {//si coincide llegas a un vertice	
+							//System.out.println("vector encontrado(indice: "+i+" )");//numero del vertice encontrado		
+							System.out.println(listaArraysCone.get(traductor(this.posX,this.posY)));//vertice encontrado y posicion
+							verticeEncontrado=true;
+							i=listaArrays.size();//cambiar a while algun dia
+						}				
+					}
+					if (verticeEncontrado==false) {//no entra si ha encontrado el vertice
+						System.out.println("entra else");					
+						//MapaFantasmas.mapaF[this.posX][this.posY]=-1;//tachar posicion pasada
+						this.operaPos("-", "x");
+						verticeEncontrado=false;
+					}
+				}
+				//despues de comprobar las coordenadas
+			}else {
+				System.out.println("arriba no se puede");
+			}
+			if (MapaFantasmas.mapaF[this.posX][this.posY+1]!=1||MapaFantasmas.mapaF[this.posX][this.posY+1]!=-1) {// derecha
+				while (!verticeEncontrado) {//mientras no hayas encontrado coordenadas de vertice
+					posicionActual = new Integer[]{this.posX,this.posY};
+					System.out.println("posAc"+posicionActual[0]);
+					for (int i=0; i<listaArrays.size();i++) {						
+						if (listaArrays.get(i)[0]==posicionActual[0]&&listaArrays.get(i)[1]==posicionActual[1]) {//si coincide llegas a un vertice	
+							//System.out.println("vector encontrado(indice: "+i+" )");//numero del vertice encontrado		
+							System.out.println(listaArraysCone.get(traductor(this.posX,this.posY)));//vertice encontrado y posicion
+							verticeEncontrado=true;
+							i=listaArrays.size();//cambiar a while algun dia
+						}				
+					}
+					if (verticeEncontrado==false) {//no entra si ha encontrado el vertice
+						System.out.println("entra else");						
+						//MapaFantasmas.mapaF[this.posX][this.posY]=-1;//tachar posicion pasada
+						this.operaPos("+", "y");
+						verticeEncontrado=false;
+					}
+				}
+				//despues de comprobar las coordenadas
+			}else {
+				System.out.println("derecha no se puede");
+			}
+			if (MapaFantasmas.mapaF[this.posX][this.posY-1]!=1||MapaFantasmas.mapaF[this.posX][this.posY-1]!=-1) {// izq
+				while (!verticeEncontrado) {//mientras no hayas encontrado coordenadas de vertice
+					posicionActual = new Integer[]{this.posX,this.posY};
+					System.out.println("posAc"+posicionActual[0]);
+					for (int i=0; i<listaArrays.size();i++) {						
+						if (listaArrays.get(i)[0]==posicionActual[0]&&listaArrays.get(i)[1]==posicionActual[1]) {//si coincide llegas a un vertice	
+							//System.out.println("vector encontrado(indice: "+i+" )");//numero del vertice encontrado		
+							System.out.println(listaArraysCone.get(traductor(this.posX,this.posY)));//vertice encontrado y posicion
+							verticeEncontrado=true;
+							i=listaArrays.size();//cambiar a while algun dia
+						}				
+					}
+					if (verticeEncontrado==false) {//no entra si ha encontrado el vertice
+						System.out.println("entra else");						
+						//MapaFantasmas.mapaF[this.posX][this.posY]=-1;//tachar posicion pasada
+						this.operaPos("-", "y");
+						verticeEncontrado=false;
+					}
+				}
+				//despues de comprobar las coordenadas
+			}else {
+				System.out.println("izquierda no se puede");
 			}
 		}
 	}
@@ -666,7 +748,7 @@ public class Fantasma {
 	public boolean initListas () {
 		listaArraysCone = new ArrayList<Integer[]>();
 		listaArrays = new ArrayList<Integer[]>();
-		listaArrayPosActual = new ArrayList<Integer[]>();
+		//listaArrayPosActual = new ArrayList<Integer[]>();
 	
 		
 		
