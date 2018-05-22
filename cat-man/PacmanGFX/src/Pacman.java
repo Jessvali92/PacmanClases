@@ -70,14 +70,14 @@ public class Pacman {
 	
 	
 	private static void initThings () {
-		Fantasma redGhost = new Fantasma(2,1,3,4,5,6,FantasmasFirstMove.RED); 	//posx,posy,AR,AB,I,D 11/12
-		Fantasma blueGhost = new Fantasma(20,5,7,8,9,10,FantasmasFirstMove.BLUE); 	//posx,posy,AR,AB,I,D 14/12
+		Fantasma redGhost = new Fantasma(11,12,3,4,5,6,FantasmasFirstMove.RED); 	//posx,posy,AR,AB,I,D 11/12
+		Fantasma blueGhost = new Fantasma(14,12,7,8,9,10,FantasmasFirstMove.BLUE); 	//posx,posy,AR,AB,I,D 14/12
 		Fantasma yellowGhost = new Fantasma(14,16,15,16,17,18,FantasmasFirstMove.YELLOW); //posx,posy,AR,AB,I,D
 		
 		listf = new ArrayList<Fantasma>();
 		listf.add(redGhost);
-		//listf.add(blueGhost);
-		//listf.add(yellowGhost);
+		listf.add(blueGhost);
+		listf.add(yellowGhost);
 		GrafoEnteros.addcoo();
 	}
 	

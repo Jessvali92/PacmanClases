@@ -27,6 +27,10 @@ public class Fantasma {
 	private Array[][] origen;
 	private int iteraciones;
 	public String op = "";
+	private boolean step = true;
+	private int contadorPasos=0;
+	private boolean arriba =true;
+	private boolean abajo= false;
 	int vortex = 0;
 	ArrayList<Boolean> banderas = new ArrayList<Boolean>();
 	ArrayList<String> posNxtMove = new ArrayList<String>();
@@ -36,6 +40,7 @@ public class Fantasma {
 	FantasmasFirstMove color;
 	private Boolean verticeEncontrado=false;
 	Integer[] posicionActual;
+	private int nuevoMov=0;
 	
 	
 	
@@ -142,22 +147,61 @@ public class Fantasma {
 	}
 
 	public void hazLoTuyo(Catman c) {
-		this.noDijkstra();	
-			/*this.know(c);
+			this.know(c);
+			if (step==true) {
+				this.firstStep(c);
+			}
 			if (returningHome==false){
-				
-				//this.move(c);				
+				this.move(c);				
 			}else {
 				this.returnHome();
 			}
-			this.know(c);*/
+			this.know(c);
 	}
 	
 	
-	private void firstStep() { // primeros pasos de los fantasmas
+	private void firstStep(Catman c) { // primeros pasos de los fantasmas
+	
+		if (this.color==FantasmasFirstMove.BLUE&&banderas.get(2)==true) {
+			System.out.println("inblue");
+			this.firstMoveFantasmas(c);
+			System.out.println("outblue");
+		}
 		
 	}
 	
+		
+	private void firstMoveFantasmas(Catman c) {
+		//comprobar que hayan salido de la casa
+		if (contadorPasos<6 && 
+				this.posX!=11&&this.posY!=13||this.posX!=11&&this.posY!=14||this.posX!=11&&this.posY!=15) {
+			if (arriba) {
+				arriba=false;
+				abajo=true;
+				nuevoMov=1;
+				contadorPasos++;
+				move2(c);
+			}else if (abajo) {
+				abajo=false;
+				arriba=true;
+				nuevoMov=2;
+				move2(c);
+				contadorPasos++;
+			}
+		}else if (contadorPasos>6&&contadorPasos<10) {
+			if (this.color==FantasmasFirstMove.BLUE) {
+				
+			}if (this.color==FantasmasFirstMove.YELLOW) {
+				
+			}if (this.color==FantasmasFirstMove.PINK) {
+				
+			}
+			
+		}else {
+			step=false;
+		}
+	}
+
 	/*if (this.color==FantasmasFirstMove.BLUE&&banderas.get(2)==true) {
 	System.out.println("inblue");
 	this.firstMoveBlue();
@@ -369,7 +413,11 @@ public class Fantasma {
 	
 	private void returnHome() {
 		
-		if (this.getPosX() == 11 && this.getPosY() == 14) {
+		
+		
+		
+		
+		/*if (this.getPosX() == 11 && this.getPosY() == 14) {
 			//hacer movimiento final para entrar y 
 			//reproducir de nuevo la salida del fantasma
 		}/*else {
@@ -557,6 +605,104 @@ public class Fantasma {
 			}
 		}
 	}
+	
+	
+	private void move2(Catman c) {
+		movDone = false;
+		while (!movDone) {
+			int movF = nuevoMov;
+			switch (movF) {
+			case 1: // DOWN MOV
+				if (Pacman.mapa[this.getPosX() + 1][this.getPosY()] != 1
+						&& Pacman.mapa[this.getPosX() + 1][this.getPosY()] != 22) { 
+					this.operaPos("+", "x");
+					// DEATH
+					if (this.getPosX() == c.getpacx() && this.getPosY() == c.getpacy()) {
+						this.setEat(true);
+					}if (this.getDie()==true&&this.getEat()==false) {
+						MapaFantasmas.mapaF[this.getPosX()][this.getPosY()] = 28;//panic
+						this.setMovDone(true);
+					}else if (this.getDie() == true&&this.getEat()==true) {
+						MapaFantasmas.mapaF[this.getPosX()][this.getPosY()] = 33; //ojos
+						this.setMovDone(true);															
+					// ALIVE
+					} else if (this.getDie() == false) {
+						MapaFantasmas.mapaF[this.getPosX()][this.getPosY()] = imgAB;
+						this.setMovDone(true);
+					} else {
+						this.setMovDone(true);
+					}
+				}
+
+				break;
+			case 2: // UP MOV
+				if (Pacman.mapa[this.getPosX() - 1][this.getPosY()] != 1) {
+					this.operaPos("-", "x");
+					// DEATH
+					if (this.getPosX() == c.getpacx() && this.getPosY() == c.getpacy()) {
+						this.setEat(true);
+					}if (this.getDie()==true&&this.getEat()==false) {
+						MapaFantasmas.mapaF[this.getPosX()][this.getPosY()] = 28;//panic
+						this.setMovDone(true);
+					}else if (this.getDie() == true&&this.getEat()==true) {
+						MapaFantasmas.mapaF[this.getPosX()][this.getPosY()] = 33;//ojos
+						this.setMovDone(true);																
+					// ALIVE
+					} else if (this.getDie() == false) {
+						MapaFantasmas.mapaF[this.getPosX()][this.getPosY()] = imgAR;
+						this.setMovDone(true);
+					} else {
+						this.setMovDone(true);
+					}
+				}
+				break;
+			case 3: // LEFT MOV
+				if (Pacman.mapa[this.getPosX()][this.getPosY() - 1] != 1
+						&& Pacman.mapa[this.getPosX()][this.getPosY() - 1] != 22) {
+					this.operaPos("-", "y");
+					// DEATH
+					if (this.getPosX() == c.getpacx() && this.getPosY() == c.getpacy()) {
+						this.setEat(true);
+					}if (this.getDie()==true&&this.getEat()==false) {
+						MapaFantasmas.mapaF[this.getPosX()][this.getPosY()] = 28;//panic
+						this.setMovDone(true);
+					}else if (this.getDie() == true&&this.getEat()==true) {
+						MapaFantasmas.mapaF[this.getPosX()][this.getPosY()] = 33;//ojos
+						this.setMovDone(true);															
+						// ALIVE
+					} else if (this.getDie() == false) {
+						MapaFantasmas.mapaF[this.getPosX()][this.getPosY()] = imgI;
+						this.setMovDone(true);
+					} else {
+						this.setMovDone(true);
+					}
+				}
+				break;
+			case 4: // RIGHT MOV
+				if (Pacman.mapa[this.getPosX()][this.getPosY() + 1] != 1
+						&& Pacman.mapa[this.getPosX()][this.getPosY() + 1] != 22) {
+					this.operaPos("+", "y");
+					// DEATH
+					if (this.getPosX() == c.getpacx() && this.getPosY() == c.getpacy()) {
+						this.setEat(true);
+					}if (this.getDie()==true&&this.getEat()==false) {
+						MapaFantasmas.mapaF[this.getPosX()][this.getPosY()] = 28;//panic
+						this.setMovDone(true);
+					}else if (this.getDie() == true&&this.getEat()==true) {
+						MapaFantasmas.mapaF[this.getPosX()][this.getPosY()] = 33;//ojos
+						this.setMovDone(true);															
+						// ALIVE
+					} else if (this.getDie() == false) {
+						MapaFantasmas.mapaF[this.getPosX()][this.getPosY()] = imgD;
+						this.setMovDone(true);
+					} else {
+						this.setMovDone(true);
+					}
+				}
+				break;
+			}
+		}
+	}	
 	
 	public void listaArraysV() {
 		
