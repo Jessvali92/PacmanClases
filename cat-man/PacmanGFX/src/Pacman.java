@@ -1,8 +1,12 @@
 import java.awt.KeyEventDispatcher;
 import java.awt.KeyboardFocusManager;
 import java.awt.event.KeyEvent;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Scanner;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -24,6 +28,8 @@ public class Pacman {
 	public static int filas = 31;
 	public static int columnas = 28;
 	public static Catman player1 = new Catman(21,1); //new Catman(23,14);
+	static ArrayList<EntradaRanking> ranking = new ArrayList<>();
+	
 	
 	private static int[][] iniciaMapa() {
 		int mapaInicio[][] = {
@@ -70,6 +76,7 @@ public class Pacman {
 	
 	
 	private static void initThings () {
+		leeRanking();
 		Fantasma redGhost = new Fantasma(14,15,3,4,5,6,FantasmasFirstMove.RED); 	//posx,posy,AR,AB,I,D 11/12
 		Fantasma blueGhost = new Fantasma(15,12,7,8,9,10,FantasmasFirstMove.BLUE); 	//posx,posy,AR,AB,I,D 14/12
 		Fantasma yellowGhost = new Fantasma(14,13,15,16,17,18,FantasmasFirstMove.YELLOW); //posx,posy,AR,AB,I,D
@@ -136,6 +143,28 @@ public class Pacman {
 		
 		
 	}
+	
+	private static void leeRanking() {
+		// TODO Auto-generated method stub
+		try {
+			BufferedReader in = new BufferedReader(new FileReader(new File("ranking")));
+			while (in.ready()) {
+				String entrada = in.readLine();
+				String aen[] = entrada.split(" ");
+				int entradapunts = Integer.parseInt(aen[1]);
+				EntradaRanking entrank = new EntradaRanking(aen[0], entradapunts);
+				ranking.add(entrank);
+			}
+			Collections.sort(ranking);
+			in.close();
+
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	}
+	
 	
 	private static void tecladoWASD() {
 		
