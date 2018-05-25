@@ -28,6 +28,8 @@ public class Fantasma {
 	private int iteraciones;
 	public String op = "";
 	private boolean step = true;
+	private boolean stepRed = true;
+	private boolean stepBlue = true;
 	private int contadorPasos=0;
 	private boolean arriba =true;
 	private boolean abajo= false;
@@ -40,7 +42,7 @@ public class Fantasma {
 	FantasmasFirstMove color;
 	private Boolean verticeEncontrado=false;
 	Integer[] posicionActual;
-	private int nuevoMov=0;
+	private int nuevoMov=1;
 	
 	
 	
@@ -148,57 +150,117 @@ public class Fantasma {
 
 	public void hazLoTuyo(Catman c) {
 			this.know(c);
-			if (step==true) {
-				this.firstStep(c);
-			}
-			if (returningHome==false){
+			if (step) {
+				this.firstMoveFantasmas(c);
+			}else if (returningHome==false){
 				this.move(c);				
 			}else {
 				this.returnHome();
 			}
 			this.know(c);
-	}
+	}	
 	
-	
-	private void firstStep(Catman c) { // primeros pasos de los fantasmas
-	
-		if (this.color==FantasmasFirstMove.BLUE&&banderas.get(2)==true) {
-			System.out.println("inblue");
-			this.firstMoveFantasmas(c);
-			System.out.println("outblue");
-		}
-		
-	}
-	
-		
 	private void firstMoveFantasmas(Catman c) {
 		//comprobar que hayan salido de la casa
-		if (contadorPasos<6 && 
-				this.posX!=11&&this.posY!=13||this.posX!=11&&this.posY!=14||this.posX!=11&&this.posY!=15) {
-			if (arriba) {
-				arriba=false;
-				abajo=true;
-				nuevoMov=1;
-				contadorPasos++;
-				move2(c);
-			}else if (abajo) {
-				abajo=false;
-				arriba=true;
-				nuevoMov=2;
-				move2(c);
-				contadorPasos++;
+		if (this.color==FantasmasFirstMove.BLUE||this.color==FantasmasFirstMove.PINK) {
+			System.out.println("colores PINK BLUE"+contadorPasos);
+			if (contadorPasos<15) {
+				if (nuevoMov==1) {	
+					nuevoMov=2;
+					move2(c);
+					contadorPasos++;
+				}else if (nuevoMov==2) {	
+					nuevoMov=1;
+					move2(c);
+					contadorPasos++;
+				}
+			
+			}else if (contadorPasos==15) {
+				if(this.color==FantasmasFirstMove.BLUE) {
+					nuevoMov=4;
+					move2(c);
+					contadorPasos++;
+				}else {
+					nuevoMov=2;
+					move2(c);
+					contadorPasos++;
+				}
+			
+			}else if(contadorPasos>=16&&contadorPasos<=17){
+				if(this.color==FantasmasFirstMove.BLUE) {
+					nuevoMov=2;
+					move2(c);
+					contadorPasos++;
+				}else {
+					nuevoMov=2;
+					move2(c);
+					contadorPasos++;
+				}
+			}else if (contadorPasos==18){
+				if(this.color==FantasmasFirstMove.BLUE) {
+					nuevoMov=2;
+					move2(c);
+					contadorPasos++;
+				}else {
+					nuevoMov=4;
+					move2(c);
+					contadorPasos++;
+				}
+				
+			}else {
+				move(c);
+				step=false;
 			}
-		}else if (contadorPasos>6&&contadorPasos<10) {
-			if (this.color==FantasmasFirstMove.BLUE) {
+		
+		}else if (this.color==FantasmasFirstMove.RED||this.color==FantasmasFirstMove.YELLOW) {
+			System.out.println("colores PINK BLUE"+contadorPasos);
+			if (contadorPasos<8) {
+				if (nuevoMov==1) {	
+					move2(c);
+					contadorPasos++;
+					nuevoMov=2;
+				}else if (nuevoMov==2) {	
+					move2(c);
+					contadorPasos++;
+					nuevoMov=1;
 				
-			}if (this.color==FantasmasFirstMove.YELLOW) {
-				
-			}if (this.color==FantasmasFirstMove.PINK) {
-				
+				}
+			}else if (contadorPasos==8) {
+				if(this.color==FantasmasFirstMove.RED) {
+					nuevoMov=3;
+					move2(c);
+					contadorPasos++;
+				}else {
+					nuevoMov=2;
+					move2(c);
+					contadorPasos++;
+				}
+			
+			}else if(contadorPasos>=9&&contadorPasos<=10){
+				if(this.color==FantasmasFirstMove.RED) {
+					nuevoMov=2;
+					move2(c);
+					contadorPasos++;
+				}else {
+					nuevoMov=2;
+					move2(c);
+					contadorPasos++;
+				}
+			}else if (contadorPasos==11){
+				if(this.color==FantasmasFirstMove.RED) {
+					nuevoMov=2;
+					move2(c);
+					contadorPasos++;
+				}else {
+					nuevoMov=4;
+					move2(c);
+					contadorPasos++;
+				}
+			}else {
+				step=false;
+				move(c);
 			}
 			
-		}else {
-			step=false;
 		}
 	}
 

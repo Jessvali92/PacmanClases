@@ -30,7 +30,7 @@ public class Pacman {
 
 			{ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 },//0
 			{ 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },//1
-			{ 1, 3, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1 },//2
+			{ 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1 },//2
 			{ 1, 2, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 2, 1 },//3
 			{ 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1 },//4
 			{ 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },//5
@@ -70,15 +70,17 @@ public class Pacman {
 	
 	
 	private static void initThings () {
-		Fantasma redGhost = new Fantasma(11,12,3,4,5,6,FantasmasFirstMove.RED); 	//posx,posy,AR,AB,I,D 11/12
-		Fantasma blueGhost = new Fantasma(14,12,7,8,9,10,FantasmasFirstMove.BLUE); 	//posx,posy,AR,AB,I,D 14/12
-		Fantasma yellowGhost = new Fantasma(14,16,15,16,17,18,FantasmasFirstMove.YELLOW); //posx,posy,AR,AB,I,D
+		Fantasma redGhost = new Fantasma(14,15,3,4,5,6,FantasmasFirstMove.RED); 	//posx,posy,AR,AB,I,D 11/12
+		Fantasma blueGhost = new Fantasma(15,12,7,8,9,10,FantasmasFirstMove.BLUE); 	//posx,posy,AR,AB,I,D 14/12
+		Fantasma yellowGhost = new Fantasma(14,13,15,16,17,18,FantasmasFirstMove.YELLOW); //posx,posy,AR,AB,I,D
+		Fantasma pinkGhost = new Fantasma(15,14,11,12,13,14,FantasmasFirstMove.PINK); //posx,posy,AR,AB,I,D
 		
 		listf = new ArrayList<Fantasma>();
 		listf.add(redGhost);
 		listf.add(blueGhost);
 		listf.add(yellowGhost);
-		GrafoEnteros.addcoo();
+		listf.add(pinkGhost);
+		
 	}
 	
 	
@@ -218,8 +220,6 @@ public class Pacman {
 		
 		initThings();			
 		ponerGraficos();
-		
-		
         timer.schedule(new TimerTask()
         		
         {
