@@ -1,19 +1,41 @@
+import java.io.Serializable;
 
-public class Catman {
+public class Catman implements Serializable{
 
-	static Integer pacx;
-	static Integer pacy;
-	static boolean finjuego = false;
-	static boolean desactivar3x1y = true;
-	static boolean desactivar3x26y = true;
-	static boolean desactivar23x1y = true;
-	static boolean desactivar23x26y = true;
-	static boolean comebola= false;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 8615743780004636226L;
+	private Integer pacx;
+	private Integer pacy;
+	private boolean finjuego = false;
+	private boolean desactivar3x1y = true;
+	private boolean desactivar3x26y = true;
+	private boolean desactivar23x1y = true;
+	private boolean desactivar23x26y = true;
+	private boolean comebola= false;
+	static int puntos=0;
 	
 	public Catman (Integer posPacX, Integer posPacY) {
 		pacx = posPacX;
 		pacy = posPacY;
 		
+	}
+	
+	public boolean isFinjuego() {
+		return finjuego;
+	}
+
+	public void setFinjuego(boolean finjuego) {
+		this.finjuego = finjuego;
+	}
+
+	public boolean isComebola() {
+		return comebola;
+	}
+
+	public void setComebola(boolean comebola) {
+		this.comebola = comebola;
 	}
 	
 	public Integer getpacx() {
@@ -63,33 +85,34 @@ public class Catman {
 	
 	
 	private void movePacman() {		
-		
 		boolean movDone = false;
-		
 		if(!finjuego) {
 			
 			while (!movDone) {
 				// pac derecha
 				if (Pacman.mov == 6) {
 					if (Pacman.mapa[pacx][pacy+1]!=1) {
-							Pacman.mapa[pacx][pacy] = 20;
-							pacy++;
-							Pacman.mapa[pacx][pacy] = 19;
+						Pacman.mapa[pacx][pacy] = 20;
+						pacy++;
+						Pacman.mapa[pacx][pacy] = 19;
 					}
 	
 					// pac izquierda
 				} else if (Pacman.mov == 4) {
 						if (Pacman.mapa[pacx][pacy-1]!=1 /*&& map[pacx][pacy-1]!=21*/){
-								Pacman.mapa[pacx][pacy] = 20;
-								pacy--;
-								Pacman.mapa[pacx][pacy] = 26;
+						
+						Pacman.mapa[pacx][pacy] = 20;
+						pacy--;
+						Pacman.mapa[pacx][pacy] = 26;
+						
+						
 						}
 					// pac abajo
 				} else if (Pacman.mov == 5) {
 					if (Pacman.mapa[pacx+1][pacy]!=1) {
 						Pacman.mapa[pacx][pacy] = 20;
-							pacx++;
-							Pacman.mapa[pacx][pacy] = 32;
+						pacx++;
+						Pacman.mapa[pacx][pacy] = 32;
 							
 					}else if (Pacman.mapa[pacx+1][pacy]==9) {
 						Pacman.mapa[pacx][pacy] = 20;
@@ -100,17 +123,19 @@ public class Catman {
 					// pac arriba
 				} else if (Pacman.mov == 8) {
 					if (Pacman.mapa[pacx-1][pacy]!=1) {
-							Pacman.mapa[pacx][pacy] = 20;
-							pacx--;
-							Pacman.mapa[pacx][pacy] = 31;
+						Pacman.mapa[pacx][pacy] = 20;
+						pacx--;
+						Pacman.mapa[pacx][pacy] = 31;
 					}
-				
 				}
 				movDone = true;
+				
 			}			
 		}
 		
 	}
+	
+	
 	
 	private void doStuffcomprobarB() {
 		
@@ -121,6 +146,7 @@ public class Catman {
 				
 			}
 			desactivar3x1y = false;
+			puntos=puntos+9;
 			
 		}else if ( Pacman.mapa[pacx][pacy]==Pacman.mapa[3][26]&&desactivar3x26y) {
 			comebola=true;
@@ -128,6 +154,7 @@ public class Catman {
 				f.setDie(true);
 			}
 			desactivar3x26y = false;
+			puntos=puntos+9;
 			
 		}else if( Pacman.mapa[pacx][pacy]==Pacman.mapa[22][1]&&desactivar23x1y) {
 			comebola=true;
@@ -135,12 +162,14 @@ public class Catman {
 				f.setDie(true);
 			}
 			desactivar23x1y = false;
+			puntos=puntos+9;
 		}else if (Pacman.mapa[pacx][pacy]==Pacman.mapa[22][26]&&desactivar23x26y) {
 			comebola=true;
 			for(Fantasma f : Pacman.listf) {
 				f.setDie(true);
 			}
 			desactivar23x26y = false;
+			puntos=puntos+9;
 		}
 	}
 	

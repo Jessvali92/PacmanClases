@@ -2,16 +2,29 @@ import java.awt.KeyEventDispatcher;
 import java.awt.KeyboardFocusManager;
 import java.awt.event.KeyEvent;
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Scanner;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.concurrent.SynchronousQueue;
 
 public class Pacman {
+
+	/**
+	 * 
+	 */
 
 	public static Taulell t = new Taulell();
 	public static Finestra f = new Finestra(t);
@@ -29,6 +42,8 @@ public class Pacman {
 	public static int columnas = 28;
 	public static Catman player1 = new Catman(21,1); //new Catman(23,14);
 	static ArrayList<EntradaRanking> ranking = new ArrayList<>();
+	static String nom = "player";
+	static int punts = 0;
 	
 	
 	private static int[][] iniciaMapa() {
@@ -94,6 +109,9 @@ public class Pacman {
 	public static void fin() {
 		if (fin) {
 			timer.cancel();	
+			System.out.println("GAME OVER");
+			System.out.println("PUNTOS TOTALES: " +punts);
+			guardarRanking();
 		}
 	}
 	
@@ -144,10 +162,24 @@ public class Pacman {
 		
 	}
 	
+	private static int calculapunts() {
+		int calpunts=0;
+		for (int i=0;i<filas;i++) {
+			for (int j=0;j<columnas;j++) {
+				//-18
+				if(Pacman.mapa[i][j]==20) {
+					calpunts++;
+				}
+			}
+		}
+		
+		return calpunts-18;
+	}
+	
 	private static void leeRanking() {
 		// TODO Auto-generated method stub
 		try {
-			BufferedReader in = new BufferedReader(new FileReader(new File("ranking")));
+			BufferedReader in = new BufferedReader(new FileReader(new File("C:/Users/Qukita/Desktop/ranking.txt")));
 			while (in.ready()) {
 				String entrada = in.readLine();
 				String aen[] = entrada.split(" ");
@@ -161,10 +193,72 @@ public class Pacman {
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			System.out.println("No funciona la lectura");
 		}
 
 	}
 	
+	private static void guardarRanking() {
+		// TODO Auto-generated method stub
+		
+		EntradaRanking rank = new EntradaRanking(nom, punts);
+		ranking.add(rank);
+		Collections.sort(ranking);
+		File f = new File("C:/Users/Qukita/Desktop/ranking.txt");
+		try {
+			BufferedWriter out = new BufferedWriter(new FileWriter(f));
+			for (EntradaRanking er : ranking) {
+				out.write(er.nom + " " + er.punts);
+				out.newLine();
+
+			}
+			out.flush();
+			out.close();
+
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	}
+	
+	public static void saveGame() {
+		FileOutputStream fos;
+		try {
+			fos = new FileOutputStream("C:/Users/Qukita/Desktop/save.sav");
+			ObjectOutputStream oos = new ObjectOutputStream(fos);
+			oos.writeObject(Pacman.mapa);
+			oos.writeObject(listf);
+			oos.writeObject(player1);
+			System.out.println("Guardado");
+		} catch (IOException e) {
+			
+			e.printStackTrace();
+		}
+		
+	}
+	
+	public static void loadGame() {
+		FileInputStream fis;
+		try {
+			fis = new FileInputStream("C:/Users/Qukita/Desktop/save.sav");
+			ObjectInputStream ois = new ObjectInputStream(fis);
+			while(true) {
+				
+				Object o = ois.readObject();
+				if (o instanceof int[][])  Pacman.mapa = (int[][]) o;
+				else if(o instanceof ArrayList<?>) {
+					listf = (ArrayList<Fantasma>) o;	
+				}else if (o instanceof Catman) {
+					player1 = (Catman) o;
+				}
+			}			
+		} catch (IOException | ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			System.out.println("Cargado");
+		}
+			
+	}
 	
 	private static void tecladoWASD() {
 		
@@ -200,7 +294,17 @@ public class Pacman {
         		{
         			mov = 6;
         			return true;
+        		
+        		}else if(e.getKeyCode() == KeyEvent.VK_G)
+        		{
+        			saveGame();
+        			return true;
+        		}else if(e.getKeyCode() == KeyEvent.VK_L)
+        		{
+        			loadGame();
+        			return true;
         		}
+        		
         		else
         		{	
         			return false; // all other KeyEvents continue down the chain
@@ -224,7 +328,9 @@ public class Pacman {
 		for(Fantasma f : listf) {
 			f.hazLoTuyo(player1);
 		}
-		Catman.comebola=false;
+		player1.setComebola(false);
+		punts=calculapunts()+Catman.puntos;
+		System.out.println(punts);
 		fin();
 		//long endTime = System.currentTimeMillis();
 		//long time = endTime-startTime;
@@ -247,6 +353,7 @@ public class Pacman {
 
 	public static void main(String[] args) throws Throwable {
 		
+		datos();
 		initThings();			
 		ponerGraficos();
         timer.schedule(new TimerTask()
@@ -262,6 +369,18 @@ public class Pacman {
         0,
        900);      
         
+	}
+
+
+
+	private static void datos() {
+		System.out.println("Introduce nombre de jugador");
+		Scanner sc = new Scanner(System.in);
+		nom= sc.next();
+		sc.close();
+		punts=0;
+		System.out.println("¡Buena suerte "+ nom+"!");
+		
 	}
 	
 

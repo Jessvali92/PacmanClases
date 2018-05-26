@@ -1,5 +1,4 @@
-
-public class EntradaRanking implements Comparable{
+public class EntradaRanking implements Comparable<EntradaRanking>{
 	
 	String nom;
 	int punts;
@@ -8,11 +7,15 @@ public class EntradaRanking implements Comparable{
 		nom=nom2;
 		punts=punts2;
 	}
+
 		
 	@Override
-	public int compareTo(Object arg0) {
+	public int compareTo(EntradaRanking arg0) {
 		EntradaRanking er = (EntradaRanking) arg0;
 		//Return negativo = mas pequeño. Return positivo = mas grande. Return 0 = iguales.
 		return er.punts-this.punts;
 	}
 }
+
+
+
