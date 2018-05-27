@@ -52,6 +52,8 @@ public class Fantasma implements Serializable{
 	Integer[] posicionActual;
 	private int nuevoMov=1;
 	private boolean mueve=false;
+	private boolean nuevoActivo=false;
+	private boolean primeraVez=false;
 	
 	
 	
@@ -164,8 +166,13 @@ public class Fantasma implements Serializable{
 			}else if (returningHome==false){
 				this.move(c);				
 			}else {
-				this.returnHome(c);
-				if(Pacman.mapa[this.posX][this.positionHomeY]==Pacman.mapa[positionHomeX][positionHomeY]) returningHome=false;
+				this.returnHome(c);//mover volviendo
+				if(Pacman.mapa[this.posX][this.posY]==Pacman.mapa[positionHomeX][positionHomeY]) {
+					//codigo que se mueve en casa y sale
+					nuevoActivo=false;
+					returningHome=false;
+				}
+				
 			}
 			this.know(c);
 	}	
@@ -309,7 +316,7 @@ public class Fantasma implements Serializable{
 		movDone = false;
 		int movF;
 		while (!movDone) {
-			if (eat) {
+			if (nuevoActivo) {
 				movF=nuevoMov;
 			}else{
 				movF = (int) (Math.random() * (4) + 1);
@@ -535,53 +542,18 @@ public class Fantasma implements Serializable{
 			}
 		}
 	}	
-	
-	public void listaArraysV() {
-		
-
-
-	}
 
 	
 	private void returnHome(Catman c) {
-		int resultY=0;
-		int resultX=0;
 		mueve=false;
-		initListas();
-		if (!verticeEncontrado) {
-			noDijkstra();
-		}else {
-			
-		}
-		
-		
-		while (!mueve) {
-			//comprobar cual esta mas lejos
-			resultY = Math.abs(positionHomeY)-Math.abs(this.posY);
-			resultX = Math.abs(positionHomeX)-Math.abs(this.posX);
-			if (resultY>resultX) {
-				if (positionHomeY>this.posY) {
-					//derecha
-					nuevoMov=4;
-					
-				}else {
-					nuevoMov=3;
-				}
-			}else {
-				if(positionHomeX>this.posX) {
-					nuevoMov=1;
-				}else {
-					nuevoMov=2;
-				}
-			}
-			System.out.println("nuevoMov: "+nuevoMov);
-			move(c);	
-		}
+		noDijkstra(c);
 		
 	}
 	
-	public void noDijkstra() {
+	public void noDijkstra(Catman c) {
 		int mov=0;
+		int resultY=0;
+		int resultX=0;
 		boolean down=false;
 		boolean up=false;
 		boolean left=false;
@@ -605,10 +577,55 @@ public class Fantasma implements Serializable{
 			right=true;
 			System.out.println("right");
 		}
-		if (mov==3) {
+		resultY = Math.abs(positionHomeY-this.posY);
+		resultX = Math.abs(positionHomeX-this.posX);
+		if (mov>=3) {//vertice mirar el lado mas lejos
+			verticeEncontrado=true;
+			primeraVez=true;
+			System.out.println("direccion + 3 vertice encontrado");
+			if (resultY>resultX) {
+				if (positionHomeY>this.posY) {
+					nuevoMov=4;
+				}else {
+					nuevoMov=3;
+				}
+				
+			}else {
+				if (positionHomeX>this.posX) {
+					nuevoMov=1;
+					
+				}else {
+					nuevoMov=2;
+				}
+				
+			}
+			System.out.println("nuevoMov: "+nuevoMov);
+			nuevoActivo=true;
+			move(c);			
+		}else {
 			
-		}
-		
+			nuevoActivo=true;
+			//moverse al mas cercano de x o Y hasta llegar a vertice
+			if (verticeEncontrado&&primeraVez) {
+				if (left||right) {
+					if(positionHomeY>this.posY) {
+						nuevoMov=4; 
+					}else {
+						nuevoMov=3;
+					}
+						
+				}else if (up||down) {
+					if(positionHomeX>this.posX) {
+						nuevoMov=1;
+					}else {
+						nuevoMov=2;
+					}
+				}
+				primeraVez=false;
+			}
+			move(c);
+			System.out.println("se movio hacia: "+nuevoMov);
+		}	
 	}
 	
 	private int traductor(int x, int y) {
