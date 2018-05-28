@@ -29,7 +29,7 @@ public class Fantasma implements Serializable{
 	private int imgD;
 	public boolean returningHome = false;
 	public int positionHomeX = 11;
-	public int positionHomeY = 14;
+	public int positionHomeY = 13;
 	private int[][] destino;
 	private Array[][] pAnterior;
 	private Array[][] origen;
@@ -48,12 +48,10 @@ public class Fantasma implements Serializable{
 	ArrayList<Integer[]> listaArrays;
 	ArrayList<Integer[]> listaArrayPosActual;
 	FantasmasFirstMove color;
-	private Boolean verticeEncontrado=false;
 	Integer[] posicionActual;
 	private int nuevoMov=1;
-	private boolean mueve=false;
 	private boolean nuevoActivo=false;
-	private boolean primeraVez=false;
+	private boolean primeraVez=true;
 	
 	
 	
@@ -167,10 +165,10 @@ public class Fantasma implements Serializable{
 				this.move(c);				
 			}else {
 				this.returnHome(c);//mover volviendo
-				if(Pacman.mapa[this.posX][this.posY]==Pacman.mapa[positionHomeX][positionHomeY]) {
-					//codigo que se mueve en casa y sale
+				if (this.posX==positionHomeX&&this.posY==positionHomeY) {
 					nuevoActivo=false;
 					returningHome=false;
+					this.setEat(false);
 				}
 				
 			}
@@ -294,7 +292,6 @@ public class Fantasma implements Serializable{
 				returningHome=true;
 			}if (tiempobolagorda > 55) {
 				die = false;
-				eat = false;
 				tiempobolagorda = 0;
 			}
 		} else {
@@ -337,13 +334,13 @@ public class Fantasma implements Serializable{
 						MapaFantasmas.mapaF[this.getPosX()][this.getPosY()] = 28;//panic
 						this.setMovDone(true);
 					
-					}else if (this.getDie() == true&&this.getEat()==true) {
+					}else if (this.getEat()==true) {
 						MapaFantasmas.mapaF[this.getPosX()][this.getPosY()] = 33; //ojos
 						this.setMovDone(true);
-						mueve=true;	
+						
 
 						// ALIVE
-					} else if (this.getDie() == false) {
+					} else if (this.getDie() == false&&this.getEat()==false) {
 						
 						MapaFantasmas.mapaF[this.getPosX()][this.getPosY()] = imgAB;
 						this.setMovDone(true);
@@ -366,13 +363,13 @@ public class Fantasma implements Serializable{
 					}if (this.getDie()==true&&this.getEat()==false) {
 						MapaFantasmas.mapaF[this.getPosX()][this.getPosY()] = 28;//panic
 						this.setMovDone(true);
-					}else if (this.getDie() == true&&this.getEat()==true) {
+					}else if (this.getEat()==true) {
 						MapaFantasmas.mapaF[this.getPosX()][this.getPosY()] = 33;//ojos
 						this.setMovDone(true);
-						mueve=true;	
+					
 					
 					// ALIVE
-					} else if (this.getDie() == false) {
+					} else if (this.getDie() == false&&this.getEat()==false) {
 						MapaFantasmas.mapaF[this.getPosX()][this.getPosY()] = imgAR;
 						this.setMovDone(true);
 					} else {
@@ -397,12 +394,12 @@ public class Fantasma implements Serializable{
 					}if (this.getDie()==true&&this.getEat()==false) {
 						MapaFantasmas.mapaF[this.getPosX()][this.getPosY()] = 28;//panic
 						this.setMovDone(true);
-					}else if (this.getDie() == true&&this.getEat()==true) {
+					}else if (this.getEat()==true) {
 						MapaFantasmas.mapaF[this.getPosX()][this.getPosY()] = 33;//ojos
 						this.setMovDone(true);		
-						mueve=true;	
+						
 						// ALIVE
-					} else if (this.getDie() == false) {
+					} else if (this.getDie() == false&&this.getEat()==false) {
 
 						MapaFantasmas.mapaF[this.getPosX()][this.getPosY()] = imgI;
 						this.setMovDone(true);
@@ -427,12 +424,12 @@ public class Fantasma implements Serializable{
 					}if (this.getDie()==true&&this.getEat()==false) {
 						MapaFantasmas.mapaF[this.getPosX()][this.getPosY()] = 28;//panic
 						this.setMovDone(true);
-					}else if (this.getDie() == true&&this.getEat()==true) {
+					}else if (this.getEat()==true) {
 						MapaFantasmas.mapaF[this.getPosX()][this.getPosY()] = 33;//ojos
 						this.setMovDone(true);		
-						mueve=true;	
+						
 						// ALIVE
-					} else if (this.getDie() == false) {
+					} else if (this.getDie() == false&&this.getEat()==false) {
 						MapaFantasmas.mapaF[this.getPosX()][this.getPosY()] = imgD;
 						this.setMovDone(true);
 					} else {
@@ -545,13 +542,12 @@ public class Fantasma implements Serializable{
 
 	
 	private void returnHome(Catman c) {
-		mueve=false;
 		noDijkstra(c);
 		
 	}
 	
 	public void noDijkstra(Catman c) {
-		int mov=0;
+ 		int mov=0;
 		int resultY=0;
 		int resultX=0;
 		boolean down=false;
@@ -559,7 +555,7 @@ public class Fantasma implements Serializable{
 		boolean left=false;
 		boolean right=false;
 		
-		if (Pacman.mapa[this.getPosX() + 1][this.getPosY()] != 1) { // DOWN MOV
+		if (Pacman.mapa[this.getPosX() + 1][this.getPosY()] != 1&&Pacman.mapa[this.getPosX() + 1][this.getPosY()] != 22) { // DOWN MOV
 			mov++;
 			down=true;
 			System.out.println("down");
@@ -579,23 +575,29 @@ public class Fantasma implements Serializable{
 		}
 		resultY = Math.abs(positionHomeY-this.posY);
 		resultX = Math.abs(positionHomeX-this.posX);
-		if (mov>=3) {//vertice mirar el lado mas lejos
-			verticeEncontrado=true;
+		if (mov>=2) {//vertice mirar el lado mas lejos
 			primeraVez=true;
-			System.out.println("direccion + 3 vertice encontrado");
-			if (resultY>resultX) {
+			System.out.println("direccion + 3 vertice encontrado"); 
+			//TODO 4 banderas diferentes para result Y
+			if(resultY>=resultX&&right) {
+				nuevoMov=4;
+			}else if(resultY>=resultX&&left) {
+				nuevoMov=3;
+			}else if(resultY<=resultX&&down) {
+				nuevoMov=1;
+			}else if (resultY<=resultX&&up) {
+				nuevoMov=2;
+			}else if(resultY>=resultX&&!left&&!right) {
+				if (positionHomeX>this.posX) { 
+					nuevoMov=1;
+				}else {
+					nuevoMov=2;
+				}
+			}else if(resultY<=resultX&&!down&&!up) {
 				if (positionHomeY>this.posY) {
 					nuevoMov=4;
 				}else {
 					nuevoMov=3;
-				}
-				
-			}else {
-				if (positionHomeX>this.posX) {
-					nuevoMov=1;
-					
-				}else {
-					nuevoMov=2;
 				}
 				
 			}
@@ -603,10 +605,9 @@ public class Fantasma implements Serializable{
 			nuevoActivo=true;
 			move(c);			
 		}else {
-			
 			nuevoActivo=true;
 			//moverse al mas cercano de x o Y hasta llegar a vertice
-			if (verticeEncontrado&&primeraVez) {
+			if (primeraVez) {
 				if (left||right) {
 					if(positionHomeY>this.posY) {
 						nuevoMov=4; 
